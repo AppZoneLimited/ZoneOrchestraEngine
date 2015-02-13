@@ -33,16 +33,16 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class MainActivity extends Activity implements
-		ZXingScannerView.ResultHandler {
+		QRCodeScannerView.ResultHandler {
 
-	private ZXingScannerView mScannerView;
+	private QRCodeScannerView mScannerView;
 
 	private String TAG = MainActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mScannerView = new ZXingScannerView(this); //Create instance of the scanner view
+		mScannerView = new QRCodeScannerView(this); //Create instance of the scanner view
 		setContentView(mScannerView); //Set contentview with instance
 	}
 
