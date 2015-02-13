@@ -25,7 +25,7 @@ import me.dm7.barcodescanner.core.BarcodeScannerView;
 import me.dm7.barcodescanner.core.DisplayUtils;
 
 @SuppressWarnings("deprecation")
-public class ZXingScannerView extends BarcodeScannerView {
+public class QRCodeScannerView extends BarcodeScannerView {
     public interface ResultHandler {
         public void handleResult(Result rawResult);
     }
@@ -51,12 +51,12 @@ public class ZXingScannerView extends BarcodeScannerView {
         ALL_FORMATS.add(BarcodeFormat.PDF_417);
     }
 
-    public ZXingScannerView(Context context) {
+    public QRCodeScannerView(Context context) {
         super(context);
         initMultiFormatReader();
     }
 
-    public ZXingScannerView(Context context, AttributeSet attributeSet) {
+    public QRCodeScannerView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         initMultiFormatReader();
     }

@@ -25,7 +25,7 @@ This readme would be updated as more commits are made.
 ```java
 //This can easily be used by extending an Activity and implementing the ResultHandler interface for the ZXingScannerView.ResultHandler
 import com.google.zxing.Result;
-import com.appzone.zone.orchestra.engine.qrcodescanner.ZXingScannerView;
+import com.appzone.zone.orchestra.engine.qrcodescanner.QRCodeScannerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
