@@ -3,6 +3,7 @@ This is the base Engine Library for the Zone framework for Android.
 
 ### Contents
 This library contains three(3) major modules :
+
 1. The Workflow Engine.
 
 2. Script Interpreter Engine.
@@ -18,7 +19,7 @@ This readme would be updated as more commits are made.
 
 1. Added QR Code decoding with the ZXing library port.
 
-..* This update allows for scanning of QRCodes and handling results as deemed appropriate.
+- This update allows for scanning of QRCodes and handling results as deemed appropriate.
 
 #### Usage
 ```java
