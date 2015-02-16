@@ -14,6 +14,7 @@ This readme would be updated as more commits are made.
 
 > Updates and commits would be referenced using a code number notation.
 > Example Update 3.0 means update 0 of Module 3 (Script Interpreter (Predefined Functions)).
+> Code samples would be removed eventually and an example full android project would be built.
 
 ### Update 3.0 [master 75426dc](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/75426dceddab874645f6d0750f794905a0333bfb)
 
@@ -78,3 +79,9 @@ public class MainActivity extends Activity implements
 }
 
 ```
+
+### Update 3.1 [master 9bfa0f1e46](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/9bfa0f1e466b30c7cf3e424436c455c8c5a48f46)
+
+1. Added PhoneOptions.java interface, PhoneOptionsEnum.java, PhoneOptionsFactory.java and PhoneContacts.java abstraction. Example usage added to the TestZone Android Project.
+
+- This update allows pulling of contacts from user device and subsequent jsonfying it to allow easy sending over network.
