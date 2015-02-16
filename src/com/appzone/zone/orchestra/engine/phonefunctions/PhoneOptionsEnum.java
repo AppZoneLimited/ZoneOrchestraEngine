@@ -7,7 +7,7 @@ package com.appzone.zone.orchestra.engine.phonefunctions;
  * 
  */
 
-public enum PhoneOption {
-	CAMERA_API, NFC_API, FLASH_LED_API, LOCATION_API;
+public enum PhoneOptionsEnum {
+	CAMERA_API, NFC_API, FLASH_LED_API, LOCATION_API, PHONE_CONTACTS;
 }
 
