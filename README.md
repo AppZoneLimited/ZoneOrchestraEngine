@@ -22,66 +22,26 @@ This readme would be updated as more commits are made.
 
 - This update allows for scanning of QRCodes and handling results as deemed appropriate.
 
-#### Usage
-```java
-//This can easily be used by extending an Activity and implementing the ResultHandler interface for the ZXingScannerView.ResultHandler
-import com.google.zxing.Result;
-import com.appzone.zone.orchestra.engine.qrcodescanner.QRCodeScannerView;
+#### Sample Code
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.os.Bundle;
-import android.util.Log;
-
-public class MainActivity extends Activity implements
-		QRCodeScannerView.ResultHandler {
-
-	private QRCodeScannerView mScannerView;
-
-	private String TAG = MainActivity.class.getSimpleName();
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mScannerView = new QRCodeScannerView(this); //Create instance of the scanner view
-		setContentView(mScannerView); //Set contentview with instance
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		mScannerView.setResultHandler(this); // Register activity as a handler scan results.
-		mScannerView.startCamera(); // Start camera on resume
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		mScannerView.stopCamera(); // Stop camera on pause
-	}
-
-	@Override
-	public void handleResult(Result rawResult) {
-		// TODO Auto-generated method stub
-		Log.e(TAG, rawResult.getText()); // Prints scan results
-		Log.e(TAG, rawResult.getBarcodeFormat().toString()); // Prints the scan
-
-		new AlertDialog.Builder(this)
-				.setTitle("Success!!")
-				.setMessage(
-						"Result : " + rawResult.getText() + "\n"
-								+ "enCode type : "
-								+ rawResult.getBarcodeFormat().toString())
-				.create().show();
-
-	}
-
-}
-
-```
+[QRCode Sample](https://github.com/AppZoneLimited/ZoneOrchestraEngine/blob/master/src/com/example/testzone/QRScannerActivity.java)
 
 ### Update 3.1 [master 9bfa0f1e46](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/9bfa0f1e466b30c7cf3e424436c455c8c5a48f46)
 
 1. Added PhoneOptions.java interface, PhoneOptionsEnum.java, PhoneOptionsFactory.java and PhoneContacts.java abstraction. Example usage added to the TestZone Android Project.
 
 - This update allows pulling of contacts from user device and subsequent jsonfying it to allow easy sending over network.
+
+#### Sample Code
+
+[PhoneContacts Sample](https://github.com/AppZoneLimited/ZoneOrchestraEngine/blob/master/src/com/example/testzone/MainActivity.java)
+
+### Update 2.0 [master 2b9b6ce6](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/2b9b6ce6bbdc4061c038a6017e06fe90757c3ba6)
+
+1. AlphaBuild for Script Interpreter Engine (Using JavaScript as Language of Choice)
+
+- This update releases an alpha build version for the JS interpreter engine, can execute single line scripts, currently working on refining batched scripts in form of functions.
+
+#### Sample Code
+
+[ScriptInterpreter Sample](https://github.com/AppZoneLimited/ZoneOrchestraEngine/blob/master/src/com/example/testzone/JSEngineActivity.java)
