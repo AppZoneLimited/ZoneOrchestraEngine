@@ -13,7 +13,9 @@ This library contains three(3) major modules :
 This readme would be updated as more commits are made.
 
 > Updates and commits would be referenced using a code number notation.
-> Example Update 3.0 means update 0 of Module 3 (Script Interpreter (Predefined Functions)).
+
+> Example : Update 3.0 means update 0 of Module 3 (Script Interpreter (Predefined Functions)).
+
 > Code samples would be removed eventually and an example full android project would be built.
 
 ### Update 3.0 [master 75426dc](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/75426dceddab874645f6d0750f794905a0333bfb)
@@ -24,7 +26,7 @@ This readme would be updated as more commits are made.
 
 #### Sample Code
 
-[QRCode Sample](https://github.com/AppZoneLimited/ZoneOrchestraEngine/blob/master/src/com/example/testzone/QRScannerActivity.java)
+[QRCode Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/QRScannerActivity.java)
 
 ### Update 3.1 [master 9bfa0f1e46](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/9bfa0f1e466b30c7cf3e424436c455c8c5a48f46)
 
@@ -34,7 +36,7 @@ This readme would be updated as more commits are made.
 
 #### Sample Code
 
-[PhoneContacts Sample](https://github.com/AppZoneLimited/ZoneOrchestraEngine/blob/master/src/com/example/testzone/MainActivity.java)
+[PhoneContacts Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/MainActivity.java)
 
 ### Update 2.0 [master 2b9b6ce6](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/2b9b6ce6bbdc4061c038a6017e06fe90757c3ba6)
 
@@ -44,4 +46,4 @@ This readme would be updated as more commits are made.
 
 #### Sample Code
 
-[ScriptInterpreter Sample](https://github.com/AppZoneLimited/ZoneOrchestraEngine/blob/master/src/com/example/testzone/JSEngineActivity.java)
+[Script Interpreter Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/JSEngineActivity.java)
