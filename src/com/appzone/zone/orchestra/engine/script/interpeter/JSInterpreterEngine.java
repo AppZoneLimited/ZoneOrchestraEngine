@@ -41,6 +41,16 @@ public class JSInterpreterEngine {
 		return s;
 	}
 	
+	public static ArrayList<Object> generateArrayList(String args){
+		ArrayList<Object> aryObjs = new ArrayList<>();
+		String[] values = args.split("\\,");
+		
+		for(String s:values){
+			aryObjs.add((Object)s);
+		}
+		
+		return aryObjs;
+	}
 	
 }
 
