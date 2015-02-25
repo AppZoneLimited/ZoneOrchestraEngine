@@ -59,12 +59,12 @@ This readme would be updated as more commits are made.
 [Script Interpreter Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/JSEngineActivity.java)
 
 
-### Update 2.2 [master 0aa0f4f](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/0aa0f4f650ea1c1fb743a88100b393eecee7b955)
+### Update 2.2 [master ea62463](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/ea624634461759af1113f6025c5039825adbfbd9)
 
-1. BetaBuild for Script Interpreter Engine (Using JavaScript as Language of Choice)
+1. BetaBuild of the Encryption/Hashing Module
 
-- This update releases a beta build version for the JS interpreter engine, can execute functions to enable batched scripting.
+- This update releases a beta build version for the Encryption/Hashing aspect of the Script Intepreter.
 
 #### Sample Code
 
-[Script Interpreter Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/JSEngineActivity.java)
+[Encryption/Hashing Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/EncryptActivity.java)
