@@ -57,3 +57,14 @@ This readme would be updated as more commits are made.
 #### Sample Code
 
 [Script Interpreter Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/JSEngineActivity.java)
+
+
+### Update 2.2 [master 0aa0f4f](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/0aa0f4f650ea1c1fb743a88100b393eecee7b955)
+
+1. BetaBuild for Script Interpreter Engine (Using JavaScript as Language of Choice)
+
+- This update releases a beta build version for the JS interpreter engine, can execute functions to enable batched scripting.
+
+#### Sample Code
+
+[Script Interpreter Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/JSEngineActivity.java)
