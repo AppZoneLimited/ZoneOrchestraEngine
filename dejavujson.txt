@@ -1,0 +1,241 @@
+{
+  "Name": "Edit Corporate",
+  "Variables": [
+    "Corporate"
+  ],
+  "InitialStepID": "8d3deeb5-6583-4146-911c-ecf76503362c",
+  "InitialFields": [
+    {
+      "Field": "Corporate",
+      "FieldType": "Entity",
+      "SourceType": "Variable",
+      "ValueSource": null,
+      "SubMappings": {
+        "ID": {
+          "Field": "ID",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "Name": {
+          "Field": "Name",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "Address": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "Address",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "Email": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "Email",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "Phone": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "Phone",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "RC Number": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "RC Number",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "Code": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "Code",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "Business Category": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "Business Category",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "Logo Path": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "Logo Path",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "IsDeleted": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "IsDeleted",
+          "FieldType": "Default",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "Branches": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "Branches",
+          "FieldType": "EntityList",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        },
+        "ParentCorporate": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+          "Field": "ParentCorporate",
+          "FieldType": "Entity",
+          "SourceType": "Event",
+          "ValueSource": null,
+          "SubMappings": {}
+        }
+      }
+    }
+  ],
+  "Steps": [
+    "8d3deeb5-6583-4146-911c-ecf76503362c": {
+      "CommandName": [ ],
+      "Events": {
+        "UpdateCorporate Event": {
+           "AttachedCommand": {
+              "CommandMappings": [
+                {
+                  "Field": "Name",
+                  "FieldType": "Default",
+                  "SourceType": "Event",
+                  "ValueSource": null,
+                  "SubMappings": {}
+                },
+                {
+                  "Field": "Address",
+                  "FieldType": "Default",
+                  "SourceType": "Event",
+                  "ValueSource": null,
+                  "SubMappings": {}
+                },
+                {
+                  "Field": "Email",
+                  "FieldType": "Default",
+                  "SourceType": "Event",
+                  "ValueSource": null,
+                  "SubMappings": {}
+                },
+                {
+                  "Field": "Phone",
+                  "FieldType": "Default",
+                  "SourceType": "Event",
+                  "ValueSource": null,
+                  "SubMappings": {}
+                },
+                {
+                  "Field": "RC Number",
+                  "FieldType": "Default",
+                  "SourceType": "Event",
+                  "ValueSource": null,
+                  "SubMappings": {}
+                },
+                {
+                  "Field": "Business Category",
+                  "FieldType": "Default",
+                  "SourceType": "Event",
+                  "ValueSource": null,
+                  "SubMappings": {}
+                },
+                {
+                  "Field": "Code",
+                  "FieldType": "Default",
+                  "SourceType": "Event",
+                  "ValueSource": null,
+                  "SubMappings": {}
+                },
+                {
+                  "Field": "Logo Path",
+                  "FieldType": "Default",
+                  "SourceType": "Event",
+                  "ValueSource": null,
+                  "SubMappings": {}
+                }
+              ],
+              "StepID": "0ec0e414-9f49-4a0c-9f32-d3d7487c31bb"
+            },
+          "Name": "UpdateCorporate Event",
+          "WorkflowVariablesMapping": [
+            {
+              "Field": "Corporate",
+              "FieldType": "Entity",
+              "SourceType": "Event",
+              "ValueSource": "Corporate",
+              "SubMappings": {}
+            }
+          ]
+        }
+      },
+      "Id": "8d3deeb5-6583-4146-911c-ecf76503362c",
+      "ServiceName": "DejaVu.UI"
+    },
+    "0ec0e414-9f49-4a0c-9f32-d3d7487c31bb": {
+      "$type": "DejaVu.Flows.Core.Workflow.FlowStep, DejaVu.Flows.Core",
+      "CommandName": "Update AddedCorporate",
+      "Events": {
+        "Corporate detail has been updated successfully.": {
+          "$type": "DejaVu.Flows.Core.Workflow.FlowEvent, DejaVu.Flows.Core",
+          "AttachedCommands": [
+            {
+              "$type": "DejaVu.Flows.Core.Workflow.FlowCommand, DejaVu.Flows.Core",
+              "CommandMappings": [
+                {
+                  "$type": "DejaVu.Flows.Core.Workflow.FlowField, DejaVu.Flows.Core",
+                  "Field": "Message",
+                  "FieldType": "Default",
+                  "SourceType": "Constant",
+                  "ValueSource": "Corporate detail has been updated successfully.",
+                  "SubMappings": {}
+                }
+              ],
+              "StepID": "d319050d-3c23-427d-a187-56ccb98026d3"
+            }
+          ],
+          "Name": "Corporate detail has been updated successfully.",
+          "WorkflowVariablesMapping": [
+            {
+              "Field": null,
+              "FieldType": "Entity",
+              "SourceType": "Event",
+              "ValueSource": "Corporate",
+              "SubMappings": {}
+            }
+          ]
+        }
+      },
+      "Id": "0ec0e414-9f49-4a0c-9f32-d3d7487c31bb",
+      "ServiceName": "BBC.CorporateSetupServiceService.UpdateAddedCorporate",
+      "ServiceID": 1,
+      "IsUI": false
+    },
+    "d319050d-3c23-427d-a187-56ccb98026d3": {
+      "$type": "DejaVu.Flows.Core.Workflow.FlowStep, DejaVu.Flows.Core",
+      "CommandName": "Display Message",
+      "Events": {},
+      "Id": "d319050d-3c23-427d-a187-56ccb98026d3",
+      "ServiceName": "DejaVu.UI",
+      "ServiceID": 0,
+      "IsUI": false
+    }
+  ]
+}
