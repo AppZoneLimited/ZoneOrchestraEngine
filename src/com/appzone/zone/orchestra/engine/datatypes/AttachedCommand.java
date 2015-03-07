@@ -16,9 +16,11 @@ import org.json.JSONObject;
 public class AttachedCommand {
 	private ArrayList<CommandMapping> commandMappingsList;
 	private String nextStepId;
+	private JSONObject jsonObject;
 	
 	public AttachedCommand(JSONObject aCommand) throws JSONException {
 		// TODO Auto-generated constructor stub
+		this.setJsonObject(aCommand);
 		this.setNextStepId(aCommand.getString("StepID"));
 		this.commandMappingsList = new ArrayList<>();
 		
@@ -44,6 +46,14 @@ public class AttachedCommand {
 
 	public void setNextStepId(String nextStepId) {
 		this.nextStepId = nextStepId;
+	}
+
+	public JSONObject getJsonObject() {
+		return jsonObject;
+	}
+
+	public void setJsonObject(JSONObject jsonObject) {
+		this.jsonObject = jsonObject;
 	}
 }
 
