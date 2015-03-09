@@ -68,3 +68,13 @@ This readme would be updated as more commits are made.
 #### Sample Code
 
 [Encryption/Hashing Sample](https://github.com/AppZoneLimited/ZoneTestApplication/blob/master/src/com/example/testzone/EncryptActivity.java)
+
+### Update 1.0 [master 60dbac1](https://github.com/AppZoneLimited/ZoneOrchestraEngine/commit/60dbac1b30728cbe7bbf294dcec9533bf72b0386)
+
+1. Flow Parsing Engine
+
+- This update releases a engine for parsing flows.
+
+#### Sample Code
+
+> Not available yet
