@@ -33,12 +33,8 @@ public class Events {
 		
 	}
 
-	public ArrayList<AttachedCommand> getAtCommand() {
+	public ArrayList<AttachedCommand> getAttachedCommands() {
 		return atCommand;
-	}
-
-	public void setAtCommand(ArrayList<AttachedCommand> atCommand) {
-		this.atCommand = atCommand;
 	}
 
 }

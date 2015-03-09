@@ -21,7 +21,7 @@ public class AttachedCommand {
 	public AttachedCommand(JSONObject aCommand) throws JSONException {
 		// TODO Auto-generated constructor stub
 		this.setJsonObject(aCommand);
-		this.setNextStepId(aCommand.getString("StepID"));
+		this.setNextStepId(aCommand.optString("StepID", null));
 		this.commandMappingsList = new ArrayList<>();
 		
 		JSONArray commandMappings = aCommand.getJSONArray("CommandMappings");
