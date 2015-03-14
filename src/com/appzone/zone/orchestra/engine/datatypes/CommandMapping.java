@@ -25,7 +25,7 @@ public class CommandMapping {
 		// TODO Auto-generated constructor stub
 		setJsonObject(commandmapping);
 		setField(commandmapping.getString("Field"));
-		setFieldType(commandmapping.getString("Default"));
+		setFieldType(commandmapping.getString("FieldType"));
 		setSourceType(commandmapping.getString("SourceType"));
 		setValueSource(commandmapping.getString("ValueSource"));
 	}

@@ -18,6 +18,8 @@ public class Step {
 		this.setStepId(stepId);
 		this.setCommandName(stepProcedure.getString("CommandName"));
 		this.setEvents(new Events(stepProcedure.getJSONObject("Events")));
+		
+		////This causes an error!! JSON Data too malformed
 		this.setNextStepId(this.getEvents().getAttachedCommands().get(0)
 				.getNextStepId());
 	}

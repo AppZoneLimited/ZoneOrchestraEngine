@@ -33,11 +33,12 @@ public class StepsAbstraction {
 			Step s = new Step(id, jo.getJSONObject(id));
 			idToStep.put(id, s);
 		}
-
-//		for (Step s: idToStep.values()){
-//			s.setStepHolder(idToStep);
-//		}
+		
 		initialStep = (Step)idToStep.get(this.initialStepId);
+	}
+	
+	public Step getInitialStep(){
+		return initialStep;
 	}
 
 	public Step getNextStep(){
