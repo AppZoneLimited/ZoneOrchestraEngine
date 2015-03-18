@@ -3,6 +3,7 @@ package com.appzone.zone.orchestra.engine.datatypes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * @author Akapo Damilola F. [ helios66, fdamilola ]
  * Data pulled from steps
@@ -18,12 +19,14 @@ public class Step {
 		this.setStepId(stepId);
 		this.setCommandName(stepProcedure.getString("CommandName"));
 		this.setEvents(new Events(stepProcedure.getJSONObject("Events")));
-		
+
 		////This causes an error!! JSON Data too malformed
-		this.setNextStepId(this.getEvents().getAttachedCommands().get(0)
-				.getNextStepId());
+		if(this.getEvents().getAttachedCommands().size() > 0){
+			this.setNextStepId(this.getEvents().getAttachedCommands().get(0)
+					.getNextStepId());
+		}
 	}
-	
+
 
 	public String getStepId() {
 		return stepId;
@@ -63,6 +66,14 @@ public class Step {
 
 	public void setServiceType(ServiceType serviceType) {
 		this.serviceType = serviceType;
+	}
+	
+	public JSONObject getInstruction() {
+		return null;
+	}
+
+	public JSONObject getData() {
+		return null;
 	}
 
 }

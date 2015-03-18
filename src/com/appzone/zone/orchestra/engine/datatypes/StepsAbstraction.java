@@ -25,7 +25,7 @@ public class StepsAbstraction {
 	public StepsAbstraction(JSONObject jo, String initialStepId) throws JSONException{
 		// TODO Auto-generated constructor stub
 		JSONArray stepsIdArray = jo.names();
-		sizeOfSteps = stepsIdArray.length();
+		this.sizeOfSteps = stepsIdArray.length();
 		this.initialStepId = initialStepId;
 
 		for(int i = 0; i < sizeOfSteps; i++){
@@ -39,6 +39,10 @@ public class StepsAbstraction {
 	
 	public Step getInitialStep(){
 		return initialStep;
+	}
+	
+	public int noOfSteps(){
+		return this.sizeOfSteps;
 	}
 
 	public Step getNextStep(){

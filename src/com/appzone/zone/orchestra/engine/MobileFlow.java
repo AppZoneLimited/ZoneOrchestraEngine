@@ -174,12 +174,4 @@ public class MobileFlow {
 		this.stepAbstraction = stepAbstraction;
 	}
 
-	public JSONObject getInstruction() {
-		return null;
-	}
-
-	public JSONObject getData() {
-		return null;
-	}
-
 }
