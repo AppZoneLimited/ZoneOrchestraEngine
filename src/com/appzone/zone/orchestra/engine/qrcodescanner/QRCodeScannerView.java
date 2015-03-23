@@ -6,6 +6,8 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 
+import com.appzone.zone.internals.barcodescanner.core.BarcodeScannerView;
+import com.appzone.zone.internals.barcodescanner.core.DisplayUtils;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -20,9 +22,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-
-import me.dm7.barcodescanner.core.BarcodeScannerView;
-import me.dm7.barcodescanner.core.DisplayUtils;
 
 @SuppressWarnings("deprecation")
 public class QRCodeScannerView extends BarcodeScannerView {
