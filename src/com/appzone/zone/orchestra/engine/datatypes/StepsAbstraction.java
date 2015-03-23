@@ -30,7 +30,8 @@ public class StepsAbstraction {
 		this.sizeOfSteps = stepsIdArray.length();
 		this.initialStepId = initialStepId;
         this.setFields(sfields);
-		for(int i = 0; i < sizeOfSteps; i++){
+		
+        for(int i = 0; i < sizeOfSteps; i++){
 			String id = (String)stepsIdArray.getString(i);
 			Step s = new Step(id, jo.getJSONObject(id), getFields());
 			idToStep.put(id, s);
