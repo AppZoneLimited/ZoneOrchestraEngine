@@ -2,6 +2,7 @@
 package com.appzone.zone.orchestra.engine.datatypes;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -17,24 +18,34 @@ import org.json.JSONObject;
 
 public class StepsAbstraction {
 
-	HashMap<String, Step> idToStep = new HashMap<>();
+	private HashMap<String, Step> idToStep = new HashMap<>();
 	int sizeOfSteps;
-	String initialStepId;
-	Step initialStep, nextStep;
+	private String initialStepId;
+	private Step initialStep, nextStep;
+	private ArrayList<Fields> sfields;
 
-	public StepsAbstraction(JSONObject jo, String initialStepId) throws JSONException{
+	public StepsAbstraction(JSONObject jo, String initialStepId, ArrayList<Fields> sfields) throws JSONException{
 		// TODO Auto-generated constructor stub
 		JSONArray stepsIdArray = jo.names();
 		this.sizeOfSteps = stepsIdArray.length();
 		this.initialStepId = initialStepId;
-
+        this.setFields(sfields);
 		for(int i = 0; i < sizeOfSteps; i++){
 			String id = (String)stepsIdArray.getString(i);
-			Step s = new Step(id, jo.getJSONObject(id));
+			Step s = new Step(id, jo.getJSONObject(id), getFields());
 			idToStep.put(id, s);
 		}
 		
 		initialStep = (Step)idToStep.get(this.initialStepId);
+	}
+	
+	public StepsAbstraction setFields(ArrayList<Fields> sfields){
+		this.sfields = sfields;
+		return this;
+	}
+	
+	public ArrayList<Fields> getFields(){
+		return this.sfields;
 	}
 	
 	public Step getInitialStep(){

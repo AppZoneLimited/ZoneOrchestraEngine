@@ -22,14 +22,13 @@ public class AttachedCommand {
 		// TODO Auto-generated constructor stub
 		this.setJsonObject(aCommand);
 		this.setNextStepId(aCommand.optString("StepID", null));
-		this.commandMappingsList = new ArrayList<>();
 		
+		this.commandMappingsList = new ArrayList<>();
 		JSONArray commandMappings = aCommand.getJSONArray("CommandMappings");
 		for(int i = 0; i < commandMappings.length(); i++){
 			JSONObject cMapping = (JSONObject)commandMappings.get(i);
 			this.commandMappingsList.add(new CommandMapping(cMapping));
 		}
-		
 	}
 
 	public ArrayList<CommandMapping> getCommandMappingsList() {

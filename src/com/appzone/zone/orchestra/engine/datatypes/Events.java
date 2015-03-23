@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 /**
  * @author Akapo Damilola F. [ helios66, fdamilola ]
@@ -16,32 +18,48 @@ import org.json.JSONObject;
 
 public class Events {
 	
-	JSONArray eventKeys;
+	private JSONArray eventKeys;
 	private ArrayList<AttachedCommand> atCommand;
+	private String name;
+	private WorkFlowVariableMapping workflowMap;
 	
 	public Events(JSONObject events) throws JSONException {
 		// TODO Auto-generated constructor stub
-		//Log.e("EventsJSON", events.toString()+"");
 		eventKeys = events.names();
-		
 		atCommand = new ArrayList<>();
 		
 		if (eventKeys != null){
 			for (int i = 0; i < eventKeys.length() ; i ++){
 				String eventKey = (String)eventKeys.getString(i);
 				JSONObject eventObject = events.getJSONObject(eventKey);
-				//Log.e("eventObject", eventObject.names().toString());
+				Log.d("eventObject", eventObject.toString(4));
 				AttachedCommand atC = new AttachedCommand(eventObject.getJSONObject("AttachedCommands"));
-				//Log.e("AttachedCommand", atC.getJsonObject().toString(4));
 				this.atCommand.add(atC);
+				JSONArray workflowmappings = eventObject.getJSONArray("WorkflowVariablesMapping");
+				this.setWorkflowMap(new WorkFlowVariableMapping(workflowmappings));
 			}
 		}
-		
-		
+
 	}
 
 	public ArrayList<AttachedCommand> getAttachedCommands() {
 		return atCommand;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public WorkFlowVariableMapping getWorkflowMap() {
+		return workflowMap;
+	}
+
+	public void setWorkflowMap(WorkFlowVariableMapping workflowMap) {
+		this.workflowMap = workflowMap;
 	}
 
 }

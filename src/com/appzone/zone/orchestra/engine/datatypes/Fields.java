@@ -35,7 +35,7 @@ public class Fields {
 			JSONObject subMapping = subMappings.getJSONObject(id);
 			initSubs.put(id, new SubMappings(subMapping, id));
 		}
-		setFieldSubmappings(initSubs);
+		this.setFieldSubmappings(initSubs);
 	}
 	
 	

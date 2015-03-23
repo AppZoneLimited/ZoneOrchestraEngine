@@ -28,9 +28,9 @@ import com.appzone.zone.orchestra.engine.datatypes.StepsAbstraction;
 
 public class MobileFlow {
 
-	JSONObject mobileFlowJsonObject;
+	private JSONObject mobileFlowJsonObject;
 	private StepsAbstraction stepAbstraction;
-	private Fields fields;
+	private ArrayList<Fields> fields;
 	private String flowName;
 	private ArrayList<String> variables;
 
@@ -49,24 +49,34 @@ public class MobileFlow {
 				varsArray.add(var);
 			}
 
-			setVariables(varsArray);
+			this.setVariables(varsArray);
 
 			String initialStepId = mobileFlowJsonObject
 					.getString("InitialStepID");
 			JSONObject stepsObject = mobileFlowJsonObject
 					.getJSONObject("Steps");
+			
+			JSONArray fieldsArray = mobileFlowJsonObject.getJSONArray("InitialFields");
+			ArrayList<Fields> sfields = new ArrayList<>();
+			for(int i = 0; i < fieldsArray.length(); i++){
+				JSONObject jField = fieldsArray.getJSONObject(i);
+				sfields.add(new Fields(jField));
+			}
+			
+			this.setFields(sfields);
+			
 			setstepAbstractionion(new StepsAbstraction(stepsObject,
-					initialStepId));
-
-			setFields(new Fields(
-					mobileFlowJsonObject.getJSONObject("InitialFields")));
+					initialStepId, getFields()));
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	
 
-	public JSONObject returnJSON() {
+	public JSONObject getMobileFlowJson() {
 		return this.mobileFlowJsonObject;
 	}
 
@@ -74,28 +84,35 @@ public class MobileFlow {
 		// TODO Auto-generated constructor stub
 		try {
 			mobileFlowJsonObject = new JSONObject(stringFlow);
-
+			
 			setFlowName(mobileFlowJsonObject.getString("Name"));
-
 			JSONArray vars = mobileFlowJsonObject.getJSONArray("Variables");
+			
 			ArrayList<String> varsArray = new ArrayList<>();
-
 			for (int i = 0; i < vars.length(); i++) {
 				String var = (String) vars.get(i);
 				varsArray.add(var);
 			}
 
-			setVariables(varsArray);
+			this.setVariables(varsArray);
 
 			String initialStepId = mobileFlowJsonObject
 					.getString("InitialStepID");
 			JSONObject stepsObject = mobileFlowJsonObject
 					.getJSONObject("Steps");
+			
+			JSONArray fieldsArray = mobileFlowJsonObject.getJSONArray("InitialFields");
+			ArrayList<Fields> sfields = new ArrayList<>();
+			
+			for(int i = 0; i < fieldsArray.length(); i++){
+				JSONObject jField = fieldsArray.getJSONObject(i);
+				sfields.add(new Fields(jField));
+			}
+			
+			setFields(sfields);
+			
 			setstepAbstractionion(new StepsAbstraction(stepsObject,
-					initialStepId));
-
-			setFields(new Fields(
-					mobileFlowJsonObject.getJSONObject("InitialFields")));
+					initialStepId, getFields()));
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -103,11 +120,11 @@ public class MobileFlow {
 		}
 	}
 
-	public Fields getFields() {
+	public ArrayList<Fields> getFields() {
 		return fields;
 	}
 
-	public void setFields(Fields fields) {
+	public void setFields(ArrayList<Fields> fields) {
 		this.fields = fields;
 	}
 

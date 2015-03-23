@@ -219,17 +219,13 @@
         }
       },
       "Id": "0ec0e414-9f49-4a0c-9f32-d3d7487c31bb",
-      "ServiceName": "BBC.CorporateSetupServiceService.UpdateAddedCorporate",
-      "ServiceID": 1,
-      "IsUI": false
+      "ServiceName": "BBC.CorporateSetupServiceService.UpdateAddedCorporate"
     },
     "d319050d-3c23-427d-a187-56ccb98026d3": {
       "CommandName": "Display Message",
       "Events": {},
       "Id": "d319050d-3c23-427d-a187-56ccb98026d3",
-      "ServiceName": "DejaVu.UI",
-      "ServiceID": 0,
-      "IsUI": false
+      "ServiceName": "DejaVu.UI"
     }
   }
 }

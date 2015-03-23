@@ -1,5 +1,6 @@
 package com.appzone.zone.orchestra.engine.datatypes;
 
+import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,20 +12,39 @@ import org.json.JSONObject;
  */
 
 public class Step {
-	private String stepId, nextStepId, commandName;
+	private String stepId, nextStepId, commandName, serviceName;
 	private Events events;
 	private ServiceType serviceType;
+	private ArrayList<Fields> sfields;
 
-	public Step(String stepId, JSONObject stepProcedure) throws JSONException {
+	public Step(String stepId, JSONObject stepProcedure, ArrayList<Fields> sfields) throws JSONException {
 		this.setStepId(stepId);
 		this.setCommandName(stepProcedure.getString("CommandName"));
+		this.setServiceName(stepProcedure.getString("ServiceName"));
 		this.setEvents(new Events(stepProcedure.getJSONObject("Events")));
-
-		////This causes an error!! JSON Data too malformed
+		this.setFields(sfields);
 		if(this.getEvents().getAttachedCommands().size() > 0){
 			this.setNextStepId(this.getEvents().getAttachedCommands().get(0)
 					.getNextStepId());
 		}
+	}
+
+	public Step setFields(ArrayList<Fields> sfields){
+		this.sfields = sfields;
+		return this;
+	}
+
+	public ArrayList<Fields> getFields(){
+		return this.sfields;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
 	}
 
 
@@ -67,13 +87,46 @@ public class Step {
 	public void setServiceType(ServiceType serviceType) {
 		this.serviceType = serviceType;
 	}
-	
-	public JSONObject getInstruction() {
-		return null;
+
+	/**
+	 * 
+	 * @return JSONObject of Commands. SIngle command objects can be parsed using the CommandMapping class
+	 * @throws JSONException
+	 */
+	public JSONObject getCommands() throws JSONException {
+		JSONObject data = new JSONObject();
+		ArrayList<AttachedCommand> attachedCommands = this.getEvents().getAttachedCommands();
+
+		if (attachedCommands.size() > 0){
+			for(int i = 0; i < attachedCommands.size(); i++){
+				AttachedCommand attCom = attachedCommands.get(i);
+				ArrayList<CommandMapping> commandMappings = attCom.getCommandMappingsList();
+				for(CommandMapping cmap:commandMappings){
+					data.put(cmap.getField(), cmap.getJson());
+				}
+			}
+			return data;
+		}else{
+			return data;
+		}
 	}
 
-	public JSONObject getData() {
-		return null;
+	public JSONObject getData() throws JSONException {
+		JSONObject data = new JSONObject();
+		ArrayList<AttachedCommand> attachedCommands = this.getEvents().getAttachedCommands();
+
+		if (attachedCommands.size() > 0){
+			for(int i = 0; i < attachedCommands.size(); i++){
+				AttachedCommand attCom = attachedCommands.get(i);
+				ArrayList<CommandMapping> commandMappings = attCom.getCommandMappingsList();
+				for(CommandMapping cmap:commandMappings){
+					data.put(cmap.getField(), cmap.getValueSource());
+				}
+			}
+			return data;
+		}else{
+			return data;
+		}
 	}
 
 }
