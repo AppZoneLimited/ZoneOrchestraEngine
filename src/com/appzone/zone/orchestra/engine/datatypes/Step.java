@@ -1,8 +1,11 @@
 package com.appzone.zone.orchestra.engine.datatypes;
 
 import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
 
 
 /**
@@ -13,6 +16,7 @@ import org.json.JSONObject;
 
 public class Step {
 	private String stepId, nextStepId, commandName, serviceName;
+	private JSONObject stepResult;
 	private Events events;
 	private ServiceType serviceType;
 	private ArrayList<Fields> sfields;
@@ -42,6 +46,9 @@ public class Step {
 		return serviceName;
 	}
 
+	public void setResultCallBack(StepResultCallback stepResultCallback){
+		stepResultCallback.onStepResult(this, getStepResult());
+	}
 
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
@@ -90,7 +97,7 @@ public class Step {
 
 	/**
 	 * 
-	 * @return JSONObject of Commands. SIngle command objects can be parsed using the CommandMapping class
+	 * @return JSONObject of Commands. Single command objects can be parsed using the CommandMapping class
 	 * @throws JSONException
 	 */
 	public JSONObject getCommands() throws JSONException {
@@ -127,6 +134,14 @@ public class Step {
 		}else{
 			return data;
 		}
+	}
+
+	public JSONObject getStepResult() {
+		return stepResult;
+	}
+
+	public void setStepResult(JSONObject stepResult) {
+		this.stepResult = stepResult;
 	}
 
 }
