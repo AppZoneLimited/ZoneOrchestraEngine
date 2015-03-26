@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
 
 /**
  * @author Akapo Damilola F. [ helios66, fdamilola ]
@@ -15,7 +14,7 @@ import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
  * 
  */
 
-public class StepsAbstraction {
+public class StepsAbstraction{
 
 	private HashMap<String, Step> idToStep = new HashMap<>();
 	int sizeOfSteps;
@@ -34,7 +33,7 @@ public class StepsAbstraction {
 
 		for (int i = 0; i < sizeOfSteps; i++) {
 			String id = (String) stepsIdArray.getString(i);
-			Step s = new Step(id, jo.getJSONObject(id), getFields());
+			Step s = new Step(id, jo.getJSONObject(id), getFields(), this);
 			idToStep.put(id, s);
 		}
 		aardvark = null;
@@ -45,7 +44,6 @@ public class StepsAbstraction {
 		this.sfields = sfields;
 		return this;
 	}
-
 
 
 	public ArrayList<Fields> getFields() {
@@ -70,15 +68,13 @@ public class StepsAbstraction {
 			getCurrentStep().setStepResult(result);
 		}
 	}
-	
-	public void setStepResultCallBack(StepResultCallback resultCallBack){
-		Step s = getNextStep();
-		while(s != null){
-			//s.setStepResult();
-			resultCallBack.onStepResult(s, s.getStepResult());
-			s = getNextStep();
-		}
-	}
+
+//	public void setOnStepResultCallBack(Step s, StepResultCallback resultCallBack){
+//			while(s != null){
+//				resultCallBack.onStepResult(s, s.getStepResult());
+//				s = getNextStep();
+//			}
+//	}
 
 	public Step getNextStep() {
 
@@ -98,5 +94,7 @@ public class StepsAbstraction {
 			}
 		}
 	}
+
+
 
 }

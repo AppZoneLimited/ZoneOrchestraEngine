@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
 
 
+
+
 /**
  * @author Akapo Damilola F. [ helios66, fdamilola ]
  * Data pulled from steps
@@ -20,9 +22,11 @@ public class Step {
 	private Events events;
 	private ServiceType serviceType;
 	private ArrayList<Fields> sfields;
+	private StepsAbstraction stepAbstract;
 
-	public Step(String stepId, JSONObject stepProcedure, ArrayList<Fields> sfields) throws JSONException {
+	public Step(String stepId, JSONObject stepProcedure, ArrayList<Fields> sfields, StepsAbstraction stepsAbstraction) throws JSONException {
 		this.setStepId(stepId);
+		this.setStepAbstract(stepsAbstraction);
 		this.setCommandName(stepProcedure.getString("CommandName"));
 		this.setServiceName(stepProcedure.getString("ServiceName"));
 		this.setEvents(new Events(stepProcedure.getJSONObject("Events")));
@@ -44,10 +48,6 @@ public class Step {
 
 	public String getServiceName() {
 		return serviceName;
-	}
-
-	public void setResultCallBack(StepResultCallback stepResultCallback){
-		stepResultCallback.onStepResult(this, getStepResult());
 	}
 
 	public void setServiceName(String serviceName) {
@@ -142,6 +142,26 @@ public class Step {
 
 	public void setStepResult(JSONObject stepResult) {
 		this.stepResult = stepResult;
+	}
+
+	public void setStepResult(JSONObject stepResult, StepsAbstraction sa, StepResultCallback stepResultCallback) {
+		this.setStepResult(stepResult);
+		this.setStepAbstract(sa);
+		stepResultCallback.onStepResult(sa, this, this.stepResult);
+		Step nextStep = sa.getNextStep();
+		if(nextStep != null){
+			stepResultCallback.onGetNextStep(nextStep);
+		}else{
+			return;
+		}
+	}
+
+	public StepsAbstraction getStepAbstract() {
+		return stepAbstract;
+	}
+
+	public void setStepAbstract(StepsAbstraction stepAbstract) {
+		this.stepAbstract = stepAbstract;
 	}
 
 }
