@@ -23,12 +23,16 @@ public class Step {
 	private ServiceType serviceType;
 	private ArrayList<Fields> sfields;
 	private StepsAbstraction stepAbstract;
+	private boolean isUI;
+	private int serviceID;
 
 	public Step(String stepId, JSONObject stepProcedure, ArrayList<Fields> sfields, StepsAbstraction stepsAbstraction) throws JSONException {
 		this.setStepId(stepId);
 		this.setStepAbstract(stepsAbstraction);
 		this.setCommandName(stepProcedure.getString("CommandName"));
 		this.setServiceName(stepProcedure.getString("ServiceName"));
+		this.setServiceID(stepProcedure.optInt("ServiceID"));
+		this.setUI(stepProcedure.getBoolean("IsUI"));
 		this.setEvents(new Events(stepProcedure.getJSONObject("Events")));
 		this.setFields(sfields);
 		if(this.getEvents().getAttachedCommands().size() > 0){
@@ -162,6 +166,22 @@ public class Step {
 
 	public void setStepAbstract(StepsAbstraction stepAbstract) {
 		this.stepAbstract = stepAbstract;
+	}
+
+	public boolean isUI() {
+		return isUI;
+	}
+
+	public void setUI(boolean isUI) {
+		this.isUI = isUI;
+	}
+
+	public int getServiceID() {
+		return serviceID;
+	}
+
+	public void setServiceID(int serviceID) {
+		this.serviceID = serviceID;
 	}
 
 }

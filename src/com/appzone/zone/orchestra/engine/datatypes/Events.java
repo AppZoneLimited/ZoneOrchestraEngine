@@ -33,8 +33,12 @@ public class Events {
 				String eventKey = (String)eventKeys.getString(i);
 				JSONObject eventObject = events.getJSONObject(eventKey);
 				Log.d("eventObject", eventObject.toString(4));
-				AttachedCommand atC = new AttachedCommand(eventObject.getJSONObject("AttachedCommands"));
-				this.atCommand.add(atC);
+				JSONArray atcom = eventObject.getJSONArray("AttachedCommands");
+				for(int s = 0; s < atcom.length(); s++){
+					JSONObject atCommandOb = (JSONObject)atcom.get(s);
+					AttachedCommand atC = new AttachedCommand(atCommandOb);
+					this.atCommand.add(atC);
+				}
 				JSONArray workflowmappings = eventObject.getJSONArray("WorkflowVariablesMapping");
 				this.setWorkflowMap(new WorkFlowVariableMapping(workflowmappings));
 			}

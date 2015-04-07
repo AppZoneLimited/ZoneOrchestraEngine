@@ -14,31 +14,35 @@ import org.json.JSONObject;
  */
 
 public class Fields {
-	
+
 	private String field, fieldType, sourceType, valueSource;
 
 	private HashMap<String, SubMappings> fieldSubmappings;
-	
+
 	public Fields(JSONObject object) throws JSONException {
 		// TODO Auto-generated constructor stub
 		setField(object.getString("Field"));
 		setFieldType(object.getString("FieldType"));
 		setSourceType(object.getString("SourceType"));
 		setValueSource(object.getString("ValueSource"));
-		
-		HashMap<String, SubMappings> initSubs = new HashMap<String, Fields.SubMappings>();
-		JSONObject subMappings = object.getJSONObject("SubMappings");
-		JSONArray mappingsIds = subMappings.names();
-		
-		for(int i = 0; i < mappingsIds.length(); i++){
-			String id = (String)mappingsIds.get(i);
-			JSONObject subMapping = subMappings.getJSONObject(id);
-			initSubs.put(id, new SubMappings(subMapping, id));
+
+		try{
+			HashMap<String, SubMappings> initSubs = new HashMap<String, Fields.SubMappings>();
+			JSONObject subMappings = object.getJSONObject("SubMappings");
+			JSONArray mappingsIds = subMappings.names();
+
+			for(int i = 0; i < mappingsIds.length(); i++){
+				String id = (String)mappingsIds.get(i);
+				JSONObject subMapping = subMappings.getJSONObject(id);
+				initSubs.put(id, new SubMappings(subMapping, id));
+			}
+			this.setFieldSubmappings(initSubs);
+		}catch(Exception m){
+			m.printStackTrace();
 		}
-		this.setFieldSubmappings(initSubs);
 	}
-	
-	
+
+
 	public String getField() {
 		return field;
 	}
@@ -78,7 +82,7 @@ public class Fields {
 	public void setFieldSubmappings(HashMap<String, SubMappings> fieldSubmappings) {
 		this.fieldSubmappings = fieldSubmappings;
 	}
-	
+
 	public class SubMappings{
 		/*
 		 * "Field": "ID",
@@ -89,7 +93,7 @@ public class Fields {
 		 */
 		private String field, fieldType, sourceType, valueSource;
 		private String keyId;
-		
+
 		public SubMappings(JSONObject object, String keyId) throws JSONException {
 			// TODO Auto-generated constructor stub
 			setKeyId(keyId);
@@ -138,7 +142,7 @@ public class Fields {
 		public void setKeyId(String keyId) {
 			this.keyId = keyId;
 		}
-		
+
 	}
 }
 
