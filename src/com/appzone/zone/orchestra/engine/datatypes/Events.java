@@ -17,30 +17,34 @@ import android.util.Log;
  */
 
 public class Events {
-	
+
 	private JSONArray eventKeys;
 	private ArrayList<AttachedCommand> atCommand;
 	private String name;
 	private WorkFlowVariableMapping workflowMap;
-	
+
 	public Events(JSONObject events) throws JSONException {
-		// TODO Auto-generated constructor stub
-		eventKeys = events.names();
-		atCommand = new ArrayList<>();
-		
-		if (eventKeys != null){
-			for (int i = 0; i < eventKeys.length() ; i ++){
-				String eventKey = (String)eventKeys.getString(i);
-				JSONObject eventObject = events.getJSONObject(eventKey);
-				Log.d("eventObject", eventObject.toString(4));
-				JSONArray atcom = eventObject.getJSONArray("AttachedCommands");
-				for(int s = 0; s < atcom.length(); s++){
-					JSONObject atCommandOb = (JSONObject)atcom.get(s);
-					AttachedCommand atC = new AttachedCommand(atCommandOb);
-					this.atCommand.add(atC);
+		if (events != null) {
+			// TODO Auto-generated constructor stub
+			eventKeys = events.names();
+			atCommand = new ArrayList<>();
+			if (eventKeys != null) {
+				for (int i = 0; i < eventKeys.length(); i++) {
+					String eventKey = (String) eventKeys.getString(i);
+					JSONObject eventObject = events.getJSONObject(eventKey);
+					Log.d("eventObject", eventObject.toString(4));
+					JSONArray atcom = eventObject
+							.getJSONArray("AttachedCommands");
+					for (int s = 0; s < atcom.length(); s++) {
+						JSONObject atCommandOb = (JSONObject) atcom.get(s);
+						AttachedCommand atC = new AttachedCommand(atCommandOb);
+						this.atCommand.add(atC);
+					}
+					JSONArray workflowmappings = eventObject
+							.getJSONArray("WorkflowVariablesMapping");
+					this.setWorkflowMap(new WorkFlowVariableMapping(
+							workflowmappings));
 				}
-				JSONArray workflowmappings = eventObject.getJSONArray("WorkflowVariablesMapping");
-				this.setWorkflowMap(new WorkFlowVariableMapping(workflowmappings));
 			}
 		}
 

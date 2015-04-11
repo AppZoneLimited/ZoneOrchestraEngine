@@ -21,8 +21,7 @@ public class MobileFlow {
 	private StepsAbstraction stepAbstraction;
 	private ArrayList<Fields> fields;
 	private String flowName;
-	private ArrayList<String> variables;
-	
+	private ArrayList<JSONObject> variables;
 
 	public JSONObject getMobileFlowJson() {
 		return this.mobileFlowJsonObject;
@@ -32,14 +31,23 @@ public class MobileFlow {
 		// TODO Auto-generated constructor stub
 		try {
 			mobileFlowJsonObject = new JSONObject(stringFlow);
-			
+
 			setFlowName(mobileFlowJsonObject.getString("Name"));
 			JSONArray vars = mobileFlowJsonObject.getJSONArray("Variables");
-			
-			ArrayList<String> varsArray = new ArrayList<>();
-			for (int i = 0; i < vars.length(); i++) {
-				String var = (String) vars.get(i);
-				varsArray.add(var);
+
+			ArrayList<JSONObject> varsArray = new ArrayList<>();
+			try {
+				if (vars.length() > 0) {
+					for (int i = 0; i < vars.length(); i++) {
+						JSONObject var = (JSONObject) vars.get(i);
+						if (var != null) {
+							varsArray.add(var);
+						}
+					}
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
 			}
 
 			this.setVariables(varsArray);
@@ -48,17 +56,18 @@ public class MobileFlow {
 					.getString("InitialStepID");
 			JSONObject stepsObject = mobileFlowJsonObject
 					.getJSONObject("Steps");
-			
-			JSONArray fieldsArray = mobileFlowJsonObject.getJSONArray("InitialFields");
+
+			JSONArray fieldsArray = mobileFlowJsonObject
+					.getJSONArray("InitialFields");
 			ArrayList<Fields> sfields = new ArrayList<>();
-			
-			for(int i = 0; i < fieldsArray.length(); i++){
+
+			for (int i = 0; i < fieldsArray.length(); i++) {
 				JSONObject jField = fieldsArray.getJSONObject(i);
 				sfields.add(new Fields(jField));
 			}
-			
+
 			setFields(sfields);
-			
+
 			setstepAbstractionion(new StepsAbstraction(stepsObject,
 					initialStepId, getFields()));
 
@@ -84,14 +93,13 @@ public class MobileFlow {
 		this.flowName = flowName;
 	}
 
-	public ArrayList<String> getVariables() {
+	public ArrayList<JSONObject> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(ArrayList<String> variables) {
+	public void setVariables(ArrayList<JSONObject> variables) {
 		this.variables = variables;
 	}
-
 
 	public StepsAbstraction getstepAbstractionion() {
 		return stepAbstraction;

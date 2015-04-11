@@ -20,6 +20,7 @@ public class CommandMapping {
 	
 	private JSONObject jsonVariable;
 	private String field, fieldType, sourceType, valueSource;
+	private int type, id;
 	
 	public CommandMapping(JSONObject commandmapping) throws JSONException {
 		// TODO Auto-generated constructor stub
@@ -28,6 +29,24 @@ public class CommandMapping {
 		setFieldType(commandmapping.getString("FieldType"));
 		setSourceType(commandmapping.getString("SourceType"));
 		setValueSource(commandmapping.getString("ValueSource"));
+		setType(commandmapping.getInt("type"));
+		setId(commandmapping.getInt("id"));
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public JSONObject getJson() {

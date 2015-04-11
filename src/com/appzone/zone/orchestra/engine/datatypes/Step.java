@@ -17,33 +17,45 @@ import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
  */
 
 public class Step {
-	private String stepId, nextStepId, commandName, serviceName;
+	private String stepId, nextStepId, serviceName;
 	private JSONObject stepResult;
 	private Events events;
 	private ServiceType serviceType;
 	private ArrayList<Fields> sfields;
 	private StepsAbstraction stepAbstract;
-	private boolean isUI;
-	private int serviceID;
+	private CommandName commandName;
 
 	public Step(String stepId, JSONObject stepProcedure, ArrayList<Fields> sfields, StepsAbstraction stepsAbstraction) throws JSONException {
 		this.setStepId(stepId);
 		this.setStepAbstract(stepsAbstraction);
-		this.setCommandName(stepProcedure.getString("CommandName"));
-		this.setServiceName(stepProcedure.getString("ServiceName"));
-		this.setServiceID(stepProcedure.optInt("ServiceID"));
-		this.setUI(stepProcedure.getBoolean("IsUI"));
-		this.setEvents(new Events(stepProcedure.getJSONObject("Events")));
 		this.setFields(sfields);
-		if(this.getEvents().getAttachedCommands().size() > 0){
-			this.setNextStepId(this.getEvents().getAttachedCommands().get(0)
-					.getNextStepId());
+		
+		this.setCommandName(new CommandName(stepProcedure.optJSONObject("CommandName")));
+		this.setServiceName(stepProcedure.optString("ServiceName"));
+		
+		if(stepProcedure.optJSONObject("Events") == null){
+			this.setNextStepId(null);
+			this.setEvents(null);
+		}else{
+			this.setEvents(new Events(stepProcedure.optJSONObject("Events")));
+			if(this.getEvents().getAttachedCommands().size() > 0){
+				this.setNextStepId(this.getEvents().getAttachedCommands().get(0)
+						.getNextStepId());
+			}
 		}
 	}
 
 	public Step setFields(ArrayList<Fields> sfields){
 		this.sfields = sfields;
 		return this;
+	}
+
+	public CommandName getCommandName() {
+		return commandName;
+	}
+
+	public void setCommandName(CommandName commandName) {
+		this.commandName = commandName;
 	}
 
 	public ArrayList<Fields> getFields(){
@@ -73,14 +85,6 @@ public class Step {
 
 	public void setNextStepId(String nextStepId) {
 		this.nextStepId = nextStepId;
-	}
-
-	public String getCommandName() {
-		return commandName;
-	}
-
-	public void setCommandName(String commandName) {
-		this.commandName = commandName;
 	}
 
 	public Events getEvents() {
@@ -168,20 +172,5 @@ public class Step {
 		this.stepAbstract = stepAbstract;
 	}
 
-	public boolean isUI() {
-		return isUI;
-	}
-
-	public void setUI(boolean isUI) {
-		this.isUI = isUI;
-	}
-
-	public int getServiceID() {
-		return serviceID;
-	}
-
-	public void setServiceID(int serviceID) {
-		this.serviceID = serviceID;
-	}
 
 }
