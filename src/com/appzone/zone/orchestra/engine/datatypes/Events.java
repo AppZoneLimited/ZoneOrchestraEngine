@@ -7,7 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+//import android.util.Log;
 
 
 /**
@@ -32,7 +32,7 @@ public class Events {
 				for (int i = 0; i < eventKeys.length(); i++) {
 					String eventKey = (String) eventKeys.getString(i);
 					JSONObject eventObject = events.getJSONObject(eventKey);
-					Log.d("eventObject", eventObject.toString(4));
+					//Log.d("eventObject", eventObject.toString(4));
 					JSONArray atcom = eventObject
 							.getJSONArray("AttachedCommands");
 					for (int s = 0; s < atcom.length(); s++) {

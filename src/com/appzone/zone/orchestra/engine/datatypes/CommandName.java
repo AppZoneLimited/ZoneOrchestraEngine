@@ -14,16 +14,27 @@ import org.json.JSONObject;
 
 public class CommandName {
 
-	private String commandName, description, implementation, id,
-			versionNumber, institutionCode, successMessage, failureMessage;
+	private String commandName, commandNameString, description, implementation, id, versionNumber,
+			institutionCode, successMessage, failureMessage;
 	private boolean isToSave, isNew;
-	
+
+	private JSONObject cObject;
 	private ArrayList<Sections> sections = new ArrayList<Sections>();
 	private ArrayList<Buttons> buttons = new ArrayList<Buttons>();
 	private Category category;
 	private ArrayList<SingleField> allFields = new ArrayList<SingleField>();
-	
-	public CommandName(JSONObject cObject) throws JSONException{
+
+	public CommandName(String cObjectString) throws JSONException {
+		setCommandNameString(cObjectString);
+		
+		cObject = null;
+		try {
+			cObject = new JSONObject(cObjectString);
+		} catch (Exception s) {
+			s.printStackTrace();
+			//setCommandNameString(cObjectString);
+		}
+		
 		if (cObject != null) {
 			// TODO Auto-generated constructor stub
 			setCommandName(cObject.optString("Name"));
@@ -66,6 +77,19 @@ public class CommandName {
 				;
 			}
 		}
+
+	}
+
+	public JSONObject getCommandNameJSONObject(){
+		return this.cObject;
+	}
+	
+	public String getCommandName() {
+		return commandName;
+	}
+
+	public void setCommandName(String commandName) {
+		this.commandName = commandName;
 	}
 
 	public Category getCategory() {
@@ -76,14 +100,14 @@ public class CommandName {
 		this.category = category;
 	}
 
-	public void setButtons(ArrayList<Buttons> buttons){
+	public void setButtons(ArrayList<Buttons> buttons) {
 		this.buttons = buttons;
 	}
-	
-	public ArrayList<Buttons> getButtons(){
+
+	public ArrayList<Buttons> getButtons() {
 		return this.buttons;
 	}
-	
+
 	public ArrayList<Sections> getSections() {
 		return sections;
 	}
@@ -92,12 +116,12 @@ public class CommandName {
 		this.sections = sections;
 	}
 
-	public String getCommandName() {
-		return commandName;
+	public String getCommandNameString() {
+		return commandNameString;
 	}
 
-	public void setCommandName(String commandName) {
-		this.commandName = commandName;
+	public void setCommandNameString(String commandNameString) {
+		this.commandNameString = commandNameString;
 	}
 
 	public String getDescription() {
@@ -180,5 +204,4 @@ public class CommandName {
 		this.allFields = allFields;
 	}
 
-	
 }

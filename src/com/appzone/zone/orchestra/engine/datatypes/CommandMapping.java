@@ -25,12 +25,12 @@ public class CommandMapping {
 	public CommandMapping(JSONObject commandmapping) throws JSONException {
 		// TODO Auto-generated constructor stub
 		setJsonObject(commandmapping);
-		setField(commandmapping.getString("Field"));
-		setFieldType(commandmapping.getString("FieldType"));
-		setSourceType(commandmapping.getString("SourceType"));
-		setValueSource(commandmapping.getString("ValueSource"));
-		setType(commandmapping.getInt("type"));
-		setId(commandmapping.getInt("id"));
+		setField(commandmapping.optString("Field"));
+		setFieldType(commandmapping.optString("FieldType"));
+		setSourceType(commandmapping.optString("SourceType"));
+		setValueSource(commandmapping.optString("ValueSource"));
+		setType(commandmapping.optInt("type"));
+		setId(commandmapping.optInt("id"));
 	}
 
 	public int getType() {

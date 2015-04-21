@@ -19,30 +19,37 @@ import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
 public class Step {
 	private String stepId, nextStepId, serviceName;
 	private JSONObject stepResult;
+	private JSONObject prevStepResult;
 	private Events events;
 	private ServiceType serviceType;
 	private ArrayList<Fields> sfields;
 	private StepsAbstraction stepAbstract;
 	private CommandName commandName;
+	private JSONObject commandNameJson;
+	private JSONObject eventJSON;
 
 	public Step(String stepId, JSONObject stepProcedure, ArrayList<Fields> sfields, StepsAbstraction stepsAbstraction) throws JSONException {
 		this.setStepId(stepId);
 		this.setStepAbstract(stepsAbstraction);
 		this.setFields(sfields);
 		
-		this.setCommandName(new CommandName(stepProcedure.optJSONObject("CommandName")));
+		String commandNameJson = stepProcedure.optString("CommandName");
+		this.setCommandName(new CommandName(commandNameJson));
 		this.setServiceName(stepProcedure.optString("ServiceName"));
 		
 		if(stepProcedure.optJSONObject("Events") == null){
 			this.setNextStepId(null);
 			this.setEvents(null);
+			this.setEventJSON(null);
 		}else{
 			this.setEvents(new Events(stepProcedure.optJSONObject("Events")));
+			this.setEventJSON(stepProcedure.optJSONObject("Events"));
 			if(this.getEvents().getAttachedCommands().size() > 0){
 				this.setNextStepId(this.getEvents().getAttachedCommands().get(0)
 						.getNextStepId());
 			}
 		}
+		this.setPrevStepResult(null);
 	}
 
 	public Step setFields(ArrayList<Fields> sfields){
@@ -148,16 +155,27 @@ public class Step {
 		return stepResult;
 	}
 
+	public JSONObject getPrevStepResult() {
+		return prevStepResult;
+	}
+
+	public void setPrevStepResult(JSONObject prevStepResult) {
+		this.prevStepResult = prevStepResult;
+	}
+
 	public void setStepResult(JSONObject stepResult) {
 		this.stepResult = stepResult;
 	}
+	
+	
 
-	public void setStepResult(JSONObject stepResult, StepsAbstraction sa, StepResultCallback stepResultCallback) {
+	public void setStepResultCallBack(JSONObject stepResult, StepsAbstraction sa, StepResultCallback stepResultCallback) {
 		this.setStepResult(stepResult);
 		this.setStepAbstract(sa);
 		stepResultCallback.onStepResult(sa, this, this.stepResult);
 		Step nextStep = sa.getNextStep();
 		if(nextStep != null){
+			nextStep.setPrevStepResult(stepResult);
 			stepResultCallback.onGetNextStep(nextStep);
 		}else{
 			return;
@@ -170,6 +188,22 @@ public class Step {
 
 	public void setStepAbstract(StepsAbstraction stepAbstract) {
 		this.stepAbstract = stepAbstract;
+	}
+
+	public JSONObject getCommandNameJson() {
+		return commandNameJson;
+	}
+
+	public void setCommandNameJson(JSONObject commandNameJson) {
+		this.commandNameJson = commandNameJson;
+	}
+
+	public JSONObject getEventJSON() {
+		return eventJSON;
+	}
+
+	public void setEventJSON(JSONObject eventJSON) {
+		this.eventJSON = eventJSON;
 	}
 
 

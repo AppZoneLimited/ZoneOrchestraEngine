@@ -40,18 +40,17 @@ public class Fields {
 
 	public Fields(JSONObject object) throws JSONException {
 		// TODO Auto-generated constructor stub
-		setField(object.getString("Field"));
-		setFieldType(object.getString("FieldType"));
-		setSourceType(object.getString("SourceType"));
-		setValueSource(object.getString("ValueSource"));
-		setType(object.getString("type"));
-		setId(object.getString("id"));
+		setField(object.optString("Field"));
+		setFieldType(object.optString("FieldType"));
+		setSourceType(object.optString("SourceType"));
+		setValueSource(object.optString("ValueSource"));
+		setType(object.optString("type"));
+		setId(object.optString("id"));
 		
 		try{
 			HashMap<String, SubMappings> initSubs = new HashMap<String, Fields.SubMappings>();
 			JSONObject subMappings = object.getJSONObject("SubMappings");
 			JSONArray mappingsIds = subMappings.names();
-
 			for(int i = 0; i < mappingsIds.length(); i++){
 				String id = (String)mappingsIds.get(i);
 				JSONObject subMapping = subMappings.getJSONObject(id);

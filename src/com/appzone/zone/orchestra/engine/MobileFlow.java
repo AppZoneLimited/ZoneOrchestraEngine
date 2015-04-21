@@ -22,16 +22,25 @@ public class MobileFlow {
 	private ArrayList<Fields> fields;
 	private String flowName;
 	private ArrayList<JSONObject> variables;
+	private String flowId;
 
 	public JSONObject getMobileFlowJson() {
 		return this.mobileFlowJsonObject;
+	}
+
+	public String getFlowId() {
+		return flowId;
+	}
+
+	public void setFlowId(String flowId) {
+		this.flowId = flowId;
 	}
 
 	public MobileFlow(String stringFlow) {
 		// TODO Auto-generated constructor stub
 		try {
 			mobileFlowJsonObject = new JSONObject(stringFlow);
-
+			setFlowId(mobileFlowJsonObject.optString("Id"));
 			setFlowName(mobileFlowJsonObject.getString("Name"));
 			JSONArray vars = mobileFlowJsonObject.getJSONArray("Variables");
 
@@ -51,7 +60,6 @@ public class MobileFlow {
 			}
 
 			this.setVariables(varsArray);
-
 			String initialStepId = mobileFlowJsonObject
 					.getString("InitialStepID");
 			JSONObject stepsObject = mobileFlowJsonObject
@@ -65,9 +73,7 @@ public class MobileFlow {
 				JSONObject jField = fieldsArray.getJSONObject(i);
 				sfields.add(new Fields(jField));
 			}
-
 			setFields(sfields);
-
 			setstepAbstractionion(new StepsAbstraction(stepsObject,
 					initialStepId, getFields()));
 
