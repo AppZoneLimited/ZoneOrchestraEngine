@@ -15,6 +15,6 @@ import com.appzone.zone.orchestra.engine.datatypes.StepsAbstraction;
 public abstract interface StepResultCallback {
 	
 	public void onStepResult(StepsAbstraction stepAbstraction, Step s, JSONObject result);
-	public void onGetNextStep(Step nextStep);
+	public void onGetNextStep(Step nextStep, JSONObject prevStepData);
 }
 

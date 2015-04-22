@@ -69,6 +69,19 @@ public class Events {
 	public void setWorkflowMap(WorkFlowVariableMapping workflowMap) {
 		this.workflowMap = workflowMap;
 	}
+	
+	public JSONArray getEventKeys() {
+		return eventKeys;
+	}
+	
+	public ArrayList<String> getEventKeysArrayList() throws JSONException {
+		ArrayList<String> eventKeys = new ArrayList<String>();
+		for (int i = 0; i < getEventKeys().length(); i++) {
+			String eventKey = (String) getEventKeys().getString(i);
+			eventKeys.add(eventKey);
+		}
+		return eventKeys;
+	}
 
 }
 

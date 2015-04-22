@@ -58,7 +58,7 @@ public class Fields {
 			}
 			this.setFieldSubmappings(initSubs);
 		}catch(Exception m){
-			m.printStackTrace();
+			//m.printStackTrace();
 		}
 	}
 
