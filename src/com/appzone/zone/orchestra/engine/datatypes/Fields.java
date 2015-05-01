@@ -56,6 +56,7 @@ public class Fields {
 				JSONObject subMapping = subMappings.getJSONObject(id);
 				initSubs.put(id, new SubMappings(subMapping, id));
 			}
+			
 			this.setFieldSubmappings(initSubs);
 		}catch(Exception m){
 			//m.printStackTrace();

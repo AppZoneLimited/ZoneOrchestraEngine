@@ -17,7 +17,7 @@ import org.json.JSONObject;
 public class StepsAbstraction{
 
 	private HashMap<String, Step> idToStep = new HashMap<>();
-	int sizeOfSteps;
+	private int sizeOfSteps;
 	private String initialStepId;
 	private Step initialStep, nextStep, currentStep;
 	private ArrayList<Fields> sfields;

@@ -2,12 +2,13 @@ package com.appzone.zone.orchestra.engine.datatypes;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.appzone.zone.orchestra.engine.enums.StepTypeEnum;
+import com.appzone.zone.orchestra.engine.interfaces.StepPathCallBack;
 import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
 
 /**
@@ -26,6 +27,32 @@ public class Step {
 	private CommandName commandName;
 	private JSONObject commandNameJson;
 	private JSONObject eventJSON;
+	private boolean isUI;
+	private boolean canRollBack;
+	private boolean isGoTo;
+	private String stepGotoId;
+	private StepTypeEnum stepTypeEnum;
+	
+	final String SERVICE_UI = "DejaVu.UI";
+    final String SERVICE_ENTITY = "DejaVu.Entity";
+    final String SERVICE_GOTO = "DejaVu.Goto";
+    final String SERVICE_SCRIPT = "DejaVu.Script";
+
+	public boolean isUI() {
+		return isUI;
+	}
+
+	public void setUI(boolean isUI) {
+		this.isUI = isUI;
+	}
+
+	public boolean canRollBack() {
+		return canRollBack;
+	}
+
+	public void setCanRollBack(boolean canRollBack) {
+		this.canRollBack = canRollBack;
+	}
 
 	public Step(String stepId, JSONObject stepProcedure,
 			ArrayList<Fields> sfields, StepsAbstraction stepsAbstraction)
@@ -34,9 +61,29 @@ public class Step {
 		this.setStepAbstract(stepsAbstraction);
 		this.setFields(sfields);
 
+		this.setUI(stepProcedure.optBoolean("IsUI", false));
+		this.setCanRollBack(stepProcedure.optBoolean("CanRollback", false));
+		
 		String commandNameJson = stepProcedure.optString("CommandName");
 		this.setCommandName(new CommandName(commandNameJson));
+		
 		this.setServiceName(stepProcedure.optString("ServiceName"));
+		
+		if(this.getServiceName().equalsIgnoreCase(SERVICE_GOTO)){
+			this.setStepGotoId(commandNameJson);
+			this.setGoTo(true);
+			this.setStepTypeEnum(StepTypeEnum.SERVICE_GOTO_ENUM);
+		}else{
+			this.setGoTo(false);
+			this.setStepGotoId(null);
+			if(this.getServiceName().equalsIgnoreCase(SERVICE_ENTITY)){
+				this.setStepTypeEnum(StepTypeEnum.SERVICE_ENTITY_ENUM);
+			}else if(this.getServiceName().equalsIgnoreCase(SERVICE_UI)){
+				this.setStepTypeEnum(StepTypeEnum.SERVICE_UI_ENUM);
+			}else if(this.getServiceName().equalsIgnoreCase(SERVICE_SCRIPT)){
+				this.setStepTypeEnum(StepTypeEnum.SERVICE_SCRIPT_ENUM);
+			}
+		}
 
 		if (stepProcedure.optJSONObject("Events") == null) {
 			this.setNextStepId(null);
@@ -60,6 +107,14 @@ public class Step {
 
 	public CommandName getCommandName() {
 		return commandName;
+	}
+
+	public StepTypeEnum getStepTypeEnum() {
+		return stepTypeEnum;
+	}
+
+	public void setStepTypeEnum(StepTypeEnum stepTypeEnum) {
+		this.stepTypeEnum = stepTypeEnum;
 	}
 
 	public void setCommandName(CommandName commandName) {
@@ -157,24 +212,24 @@ public class Step {
 		if (getStepResult() != null) {
 			ResultParser result = new ResultParser(prevStepResult);
 			try {
-				Log.e("EventKeys", this.getEvents().getEventKeysArrayList().toString());
-				Log.e("EventKeyName", result.getEventName());
+				//Log.e("EventKeys", this.getEvents().getEventKeysArrayList().toString());
+				//Log.e("EventKeyName", result.getEventName());
 				if(this.getEvents().getEventKeysArrayList().contains(result.getEventName())){
-					Log.e("EventFound", true+"");
+					//Log.e("EventFound", true+"");
 					if (attachedCommands.size() > 0) {
-						Log.e("AttachedCommandLength", attachedCommands.size()+"");
+						//Log.e("AttachedCommandLength", attachedCommands.size()+"");
 						for (int i = 0; i < attachedCommands.size(); i++) {
 							AttachedCommand attCom = attachedCommands.get(i);
 							ArrayList<CommandMapping> commandMappings = attCom
 									.getCommandMappingsList();
-							Log.e("CommandMappingsLength", commandMappings.size()+"");
+							//Log.e("CommandMappingsLength", commandMappings.size()+"");
 							for (CommandMapping cmap : commandMappings) {
-								Log.e(cmap.getField()+"", cmap.getValueSource()+ " : "+result.getEventData().getEventDataValueByKey(cmap.getValueSource()));
+								//Log.e(cmap.getField()+"", cmap.getValueSource()+ " : "+result.getEventData().getEventDataValueByKey(cmap.getValueSource()));
 								data.put(cmap.getField(), result.getEventData().getEventDataValueByKey(cmap.getValueSource()));
 							}
 						}
 				}else{
-					Log.e("Error", "Not Attached Command");
+					Log.e("Error", "No Attached Command");
 				}
 }
 			} catch (JSONException e) {
@@ -210,11 +265,14 @@ public class Step {
 		Step nextStep = sa.getNextStep();
 		if (nextStep != null) {
 			nextStep.setPrevStepResult(stepResult);
-			Log.e("CurrentStepResult", stepResult.toString());
-			stepResultCallback.onGetNextStep(nextStep, getStepData(nextStep.getPrevStepResult()));
+			stepResultCallback.onGetNextStep(nextStep, getStepData(nextStep.getPrevStepResult()), nextStep.getStepTypeEnum(), nextStep.canRollBack());
 		} else {
 			return;
 		}
+	}
+	
+	public void setStepRollBack(StepPathCallBack stpcb){
+		
 	}
 
 	public StepsAbstraction getStepAbstract() {
@@ -241,63 +299,20 @@ public class Step {
 		this.eventJSON = eventJSON;
 	}
 
-	/*
-	 * { "EventName":"Save Clicked", "EventData":{ "Name":"emma", "code":"2",
-	 * "address":"Aba"} }
-	 */
-	public static class ResultParser {
-		private String eventName;
-		private EventData eventData;
-		
-		public ResultParser(JSONObject resultJson) {
-			// TODO Auto-generated constructor stub
-			setEventName(resultJson.optString("EventName", null));
-			
-			try {
-				setEventData(new EventData(resultJson.optJSONObject("EventData")));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		public String getEventName() {
-			return eventName;
-		}
+	public boolean isGoTo() {
+		return isGoTo;
+	}
 
-		public void setEventName(String eventName) {
-			this.eventName = eventName;
-		}
+	public void setGoTo(boolean isGoTo) {
+		this.isGoTo = isGoTo;
+	}
 
-		public EventData getEventData() {
-			return eventData;
-		}
+	public String getStepGotoId() {
+		return stepGotoId;
+	}
 
-		public void setEventData(EventData eventData) {
-			this.eventData = eventData;
-		}
-
-		public static class EventData{
-			
-			private JSONArray eventDataKeys;
-			private JSONObject eventData;
-			
-			public EventData(JSONObject eventData) throws JSONException{
-				if (eventData != null) {
-					this.eventData = eventData;
-					this.eventDataKeys = eventData.names();
-				}
-			}
-			
-			public String getEventDataValueByKey(String eventDataKey){
-				String eventDataValue = eventData.optString(eventDataKey, null);
-				return eventDataValue;
-			}
-			
-			public JSONArray getEventDataKeys(){
-				return this.eventDataKeys;
-			}
-		}
+	public void setStepGotoId(String stepGotoId) {
+		this.stepGotoId = stepGotoId;
 	}
 
 }

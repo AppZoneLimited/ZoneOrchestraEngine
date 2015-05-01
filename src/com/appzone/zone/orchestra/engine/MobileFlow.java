@@ -3,15 +3,14 @@ package com.appzone.zone.orchestra.engine;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.appzone.zone.orchestra.engine.datatypes.Fields;
 import com.appzone.zone.orchestra.engine.datatypes.StepsAbstraction;
 
 /**
- * @author Akapo Damilola F. [ helios66, fdamilola ] This is the flow data
- *         structure
+ * @author Akapo Damilola F. [ helios66, fdamilola ] 
+ * Data Structure for a Mobile Flow
  * 
  */
 
@@ -24,18 +23,10 @@ public class MobileFlow {
 	private ArrayList<JSONObject> variables;
 	private String flowId;
 
-	public JSONObject getMobileFlowJson() {
-		return this.mobileFlowJsonObject;
-	}
-
-	public String getFlowId() {
-		return flowId;
-	}
-
-	public void setFlowId(String flowId) {
-		this.flowId = flowId;
-	}
-
+	/**
+	 * @param stringFlow
+	 * Creates MobileFlow object from a flowString
+	 */
 	public MobileFlow(String stringFlow) {
 		// TODO Auto-generated constructor stub
 		try {
@@ -56,7 +47,7 @@ public class MobileFlow {
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				// e.printStackTrace();
 			}
 
 			this.setVariables(varsArray);
@@ -77,7 +68,7 @@ public class MobileFlow {
 			setstepAbstractionion(new StepsAbstraction(stepsObject,
 					initialStepId, getFields()));
 
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -107,12 +98,33 @@ public class MobileFlow {
 		this.variables = variables;
 	}
 
+	/**
+	 * @return StepAbstraction object
+	 */
 	public StepsAbstraction getstepAbstractionion() {
 		return stepAbstraction;
 	}
 
 	public void setstepAbstractionion(StepsAbstraction stepAbstraction) {
 		this.stepAbstraction = stepAbstraction;
+	}
+
+	/**
+	 * @return JSONOObject : MobileFlow representation as a JSONObject
+	 */
+	public JSONObject getMobileFlowJson() {
+		return this.mobileFlowJsonObject;
+	}
+
+	/**
+	 * @return String : FlowId
+	 */
+	public String getFlowId() {
+		return flowId;
+	}
+
+	public void setFlowId(String flowId) {
+		this.flowId = flowId;
 	}
 
 }
