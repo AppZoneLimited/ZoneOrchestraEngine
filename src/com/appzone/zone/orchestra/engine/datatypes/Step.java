@@ -1,12 +1,15 @@
 package com.appzone.zone.orchestra.engine.datatypes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.appzone.zone.orchestra.engine.datatypes.Fields.SubMappings;
 import com.appzone.zone.orchestra.engine.enums.StepTypeEnum;
 import com.appzone.zone.orchestra.engine.interfaces.StepPathCallBack;
 import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
@@ -32,11 +35,11 @@ public class Step {
 	private boolean isGoTo;
 	private String stepGotoId;
 	private StepTypeEnum stepTypeEnum;
-	
+
 	final String SERVICE_UI = "DejaVu.UI";
-    final String SERVICE_ENTITY = "DejaVu.Entity";
-    final String SERVICE_GOTO = "DejaVu.Goto";
-    final String SERVICE_SCRIPT = "DejaVu.Script";
+	final String SERVICE_ENTITY = "DejaVu.Entity";
+	final String SERVICE_GOTO = "DejaVu.Goto";
+	final String SERVICE_SCRIPT = "DejaVu.Script";
 
 	public boolean isUI() {
 		return isUI;
@@ -56,19 +59,19 @@ public class Step {
 
 	public Step(String stepId, JSONObject stepProcedure,
 			ArrayList<Fields> sfields, StepsAbstraction stepsAbstraction)
-			throws JSONException {
+					throws JSONException {
 		this.setStepId(stepId);
 		this.setStepAbstract(stepsAbstraction);
 		this.setFields(sfields);
 
 		this.setUI(stepProcedure.optBoolean("IsUI", false));
 		this.setCanRollBack(stepProcedure.optBoolean("CanRollback", false));
-		
+
 		String commandNameJson = stepProcedure.optString("CommandName");
 		this.setCommandName(new CommandName(commandNameJson));
-		
+
 		this.setServiceName(stepProcedure.optString("ServiceName"));
-		
+
 		if(this.getServiceName().equalsIgnoreCase(SERVICE_GOTO)){
 			this.setStepGotoId(commandNameJson);
 			this.setGoTo(true);
@@ -100,7 +103,7 @@ public class Step {
 		this.setPrevStepResult(null);
 	}
 
-	
+
 
 	/**
 	 * 
@@ -142,10 +145,10 @@ public class Step {
 
 	public JSONObject getStepData(JSONObject prevStepResult){
 		JSONObject data = new JSONObject();
-		
+
 		ArrayList<AttachedCommand> attachedCommands = this.getEvents()
 				.getAttachedCommands();
-		
+
 		if (getStepResult() != null) {
 			ResultParser result = new ResultParser(prevStepResult);
 			try {
@@ -155,16 +158,16 @@ public class Step {
 							AttachedCommand attCom = attachedCommands.get(i);
 							ArrayList<CommandMapping> commandMappings = attCom
 									.getCommandMappingsList();
-							
+
 							for (CommandMapping cmap : commandMappings) {
-								
+
 								data.put(cmap.getField(), result.getEventData().getEventDataValueByKey(cmap.getValueSource()));
 							}
 						}
-				}else{
-					Log.e("Error", "No Attached Command");
+					}else{
+						Log.e("Error", "No Attached Command");
+					}
 				}
-}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
@@ -173,12 +176,56 @@ public class Step {
 
 		return data;
 	}
-	
+
 	public JSONObject getStepEntityData(JSONObject prevResult){
-		return null;
+		JSONObject data = new JSONObject();
+		JSONObject baseData = new JSONObject();
+		ArrayList<AttachedCommand> attachedCommands = this.getEvents()
+				.getAttachedCommands();
+		
+		if (getStepResult() != null) {
+			EntityResultParser result = new EntityResultParser(prevStepResult);
+			try {
+				if(this.getEvents().getEventKeysArrayList().contains(result.getEventName())){
+					if (attachedCommands.size() > 0) {
+						for (int i = 0; i < attachedCommands.size(); i++) {
+							AttachedCommand attCom = attachedCommands.get(i);							
+							ArrayList<CommandMapping> commandMappings = attCom
+									.getCommandMappingsList();
+							
+
+							for (CommandMapping cmap : commandMappings) {
+								if(cmap.hasSubmapping()){
+									HashMap<String, SubMappings> smaps = cmap.getFieldSubmappings();
+									Set<String> smapKeys = smaps.keySet();
+									
+									for(String keySetString:smapKeys){
+										SubMappings s = smaps.get(keySetString);
+										data.put(s.getField(), result.getEeD().getEntityEventDataValueByKey(s.getValueSource()));
+									}
+									//data.put(cmap.getField(), result.getEeD().getEntityEventDataValueByKey(cmap.getValueSource()));
+								}
+								
+							}
+						}
+					}else{
+						Log.e("Error", "No Attached Command");
+					}
+				}
+				baseData.put(result.getEeD().getEntityName(), data);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+		
+		return baseData;
 	}
 
-	
+
 
 	public void setStepResultCallBack(JSONObject stepResult,
 			StepsAbstraction sa, StepResultCallback stepResultCallback) {
@@ -193,11 +240,11 @@ public class Step {
 			return;
 		}
 	}
-	
+
 	public void setStepRollBack(StepPathCallBack stpcb){
-		
+
 	}
-	
+
 	public JSONObject getStepResult() {
 		return stepResult;
 	}
@@ -217,7 +264,7 @@ public class Step {
 	public StepsAbstraction getStepAbstract() {
 		return stepAbstract;
 	}
-	
+
 	public Step setFields(ArrayList<Fields> sfields) {
 		this.sfields = sfields;
 		return this;

@@ -1,8 +1,13 @@
 
 package com.appzone.zone.orchestra.engine.datatypes;
 
+import java.util.HashMap;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.appzone.zone.orchestra.engine.datatypes.Fields.SubMappings;
 
 /**
  * @author Akapo Damilola F. [ helios66, fdamilola ]
@@ -21,6 +26,8 @@ public class CommandMapping {
 	private JSONObject jsonVariable;
 	private String field, fieldType, sourceType, valueSource;
 	private int type, id;
+	private HashMap<String, SubMappings> fieldSubmappings;
+	private boolean hasSubmapping;
 	
 	public CommandMapping(JSONObject commandmapping) throws JSONException {
 		// TODO Auto-generated constructor stub
@@ -31,8 +38,38 @@ public class CommandMapping {
 		setValueSource(commandmapping.optString("ValueSource"));
 		setType(commandmapping.optInt("type"));
 		setId(commandmapping.optInt("id"));
+		
+		HashMap<String, SubMappings> initSubs = new HashMap<String, Fields.SubMappings>();
+		try{
+			JSONObject subMappings = commandmapping.getJSONObject("SubMappings");
+			JSONArray mappingsIds = subMappings.names();
+			for(int i = 0; i < mappingsIds.length(); i++){
+				String id = (String)mappingsIds.get(i);
+				JSONObject subMapping = subMappings.getJSONObject(id);
+				initSubs.put(id, new SubMappings(subMapping, id));
+			}
+			
+			this.setFieldSubmappings(initSubs);
+		}catch(Exception m){
+			//m.printStackTrace();
+		}
+		
+		if(initSubs.size() > 0){
+			setHasSubmapping(true);
+		}else{
+			setHasSubmapping(false);
+		}
+		
 	}
 
+	public boolean hasSubmapping() {
+		return hasSubmapping;
+	}
+
+	public void setHasSubmapping(boolean hasSubmapping) {
+		this.hasSubmapping = hasSubmapping;
+	}
+	
 	public int getType() {
 		return type;
 	}
@@ -87,6 +124,14 @@ public class CommandMapping {
 
 	public void setValueSource(String valueSource) {
 		this.valueSource = valueSource;
+	}
+
+	public HashMap<String, SubMappings> getFieldSubmappings() {
+		return fieldSubmappings;
+	}
+
+	public void setFieldSubmappings(HashMap<String, SubMappings> fieldSubmappings) {
+		this.fieldSubmappings = fieldSubmappings;
 	}
 }
 
