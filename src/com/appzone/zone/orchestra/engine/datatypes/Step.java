@@ -100,6 +100,124 @@ public class Step {
 		this.setPrevStepResult(null);
 	}
 
+	
+
+	/**
+	 * 
+	 * @return JSONObject of Commands. Single command objects can be parsed
+	 *         using the CommandMapping class
+	 * @throws JSONException
+	 */
+	public JSONObject getCommands() throws JSONException {
+		JSONObject data = new JSONObject();
+		ArrayList<AttachedCommand> attachedCommands = this.getEvents()
+				.getAttachedCommands();
+
+		if (attachedCommands.size() > 0) {
+			for (int i = 0; i < attachedCommands.size(); i++) {
+				AttachedCommand attCom = attachedCommands.get(i);
+				ArrayList<CommandMapping> commandMappings = attCom
+						.getCommandMappingsList();
+				for (CommandMapping cmap : commandMappings) {
+					data.put(cmap.getField(), cmap.getJson());
+				}
+			}
+			return data;
+		} else {
+			return data;
+		}
+	}
+
+	/*
+	 * but there is a commandMapping when setting the result for the steps, you
+	 * are expecting a json object with this format {
+	 * "EventName":"Save Clicked", "EventData":{ "Name":"emma", "code":"2",
+	 * "address":"Aba"} } In the commandMapping there is a Field and ValueSource
+	 * key what you are to do is check if event(from step) and EventName(from
+	 * resultjson) then the field value is mapped to the valueSource on the
+	 * resultjson Assuming the step has event:"Save Clicked" and "Field": "X",
+	 * ValueSource"Name" the data should be: {"X":"emma"} and this data is
+	 * available to the next step ie It is for next step
+	 */
+
+	public JSONObject getStepData(JSONObject prevStepResult){
+		JSONObject data = new JSONObject();
+		
+		ArrayList<AttachedCommand> attachedCommands = this.getEvents()
+				.getAttachedCommands();
+		
+		if (getStepResult() != null) {
+			ResultParser result = new ResultParser(prevStepResult);
+			try {
+				if(this.getEvents().getEventKeysArrayList().contains(result.getEventName())){
+					if (attachedCommands.size() > 0) {
+						for (int i = 0; i < attachedCommands.size(); i++) {
+							AttachedCommand attCom = attachedCommands.get(i);
+							ArrayList<CommandMapping> commandMappings = attCom
+									.getCommandMappingsList();
+							
+							for (CommandMapping cmap : commandMappings) {
+								
+								data.put(cmap.getField(), result.getEventData().getEventDataValueByKey(cmap.getValueSource()));
+							}
+						}
+				}else{
+					Log.e("Error", "No Attached Command");
+				}
+}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+		}
+
+		return data;
+	}
+	
+	public JSONObject getStepEntityData(JSONObject prevResult){
+		return null;
+	}
+
+	
+
+	public void setStepResultCallBack(JSONObject stepResult,
+			StepsAbstraction sa, StepResultCallback stepResultCallback) {
+		this.setStepResult(stepResult);
+		this.setStepAbstract(sa);
+		stepResultCallback.onStepResult(sa, this, this.stepResult);
+		Step nextStep = sa.getNextStep();
+		if (nextStep != null) {
+			nextStep.setPrevStepResult(stepResult);
+			stepResultCallback.onGetNextStep(nextStep, getStepData(nextStep.getPrevStepResult()), nextStep.getStepTypeEnum(), nextStep.canRollBack());
+		} else {
+			return;
+		}
+	}
+	
+	public void setStepRollBack(StepPathCallBack stpcb){
+		
+	}
+	
+	public JSONObject getStepResult() {
+		return stepResult;
+	}
+
+	public JSONObject getPrevStepResult() {
+		return prevStepResult;
+	}
+
+	public void setPrevStepResult(JSONObject prevStepResult) {
+		this.prevStepResult = prevStepResult;
+	}
+
+	public void setStepResult(JSONObject stepResult) {
+		this.stepResult = stepResult;
+	}
+
+	public StepsAbstraction getStepAbstract() {
+		return stepAbstract;
+	}
+	
 	public Step setFields(ArrayList<Fields> sfields) {
 		this.sfields = sfields;
 		return this;
@@ -163,120 +281,6 @@ public class Step {
 
 	public void setServiceType(ServiceType serviceType) {
 		this.serviceType = serviceType;
-	}
-
-	/**
-	 * 
-	 * @return JSONObject of Commands. Single command objects can be parsed
-	 *         using the CommandMapping class
-	 * @throws JSONException
-	 */
-	public JSONObject getCommands() throws JSONException {
-		JSONObject data = new JSONObject();
-		ArrayList<AttachedCommand> attachedCommands = this.getEvents()
-				.getAttachedCommands();
-
-		if (attachedCommands.size() > 0) {
-			for (int i = 0; i < attachedCommands.size(); i++) {
-				AttachedCommand attCom = attachedCommands.get(i);
-				ArrayList<CommandMapping> commandMappings = attCom
-						.getCommandMappingsList();
-				for (CommandMapping cmap : commandMappings) {
-					data.put(cmap.getField(), cmap.getJson());
-				}
-			}
-			return data;
-		} else {
-			return data;
-		}
-	}
-
-	/*
-	 * but there is a commandMapping when setting the result for the steps, you
-	 * are expecting a json object with this format {
-	 * "EventName":"Save Clicked", "EventData":{ "Name":"emma", "code":"2",
-	 * "address":"Aba"} } In the commandMapping there is a Field and ValueSource
-	 * key what you are to do is check if event(from step) and EventName(from
-	 * resultjson) then the field value is mapped to the valueSource on the
-	 * resultjson Assuming the step has event:"Save Clicked" and "Field": "X",
-	 * ValueSource"Name" the data should be: {"X":"emma"} and this data is
-	 * available to the next step ie It is for next step
-	 */
-
-	public JSONObject getStepData(JSONObject prevStepResult){
-		JSONObject data = new JSONObject();
-		
-		ArrayList<AttachedCommand> attachedCommands = this.getEvents()
-				.getAttachedCommands();
-		
-		if (getStepResult() != null) {
-			ResultParser result = new ResultParser(prevStepResult);
-			try {
-				//Log.e("EventKeys", this.getEvents().getEventKeysArrayList().toString());
-				//Log.e("EventKeyName", result.getEventName());
-				if(this.getEvents().getEventKeysArrayList().contains(result.getEventName())){
-					//Log.e("EventFound", true+"");
-					if (attachedCommands.size() > 0) {
-						//Log.e("AttachedCommandLength", attachedCommands.size()+"");
-						for (int i = 0; i < attachedCommands.size(); i++) {
-							AttachedCommand attCom = attachedCommands.get(i);
-							ArrayList<CommandMapping> commandMappings = attCom
-									.getCommandMappingsList();
-							//Log.e("CommandMappingsLength", commandMappings.size()+"");
-							for (CommandMapping cmap : commandMappings) {
-								//Log.e(cmap.getField()+"", cmap.getValueSource()+ " : "+result.getEventData().getEventDataValueByKey(cmap.getValueSource()));
-								data.put(cmap.getField(), result.getEventData().getEventDataValueByKey(cmap.getValueSource()));
-							}
-						}
-				}else{
-					Log.e("Error", "No Attached Command");
-				}
-}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		return data;
-	}
-
-	public JSONObject getStepResult() {
-		return stepResult;
-	}
-
-	public JSONObject getPrevStepResult() {
-		return prevStepResult;
-	}
-
-	public void setPrevStepResult(JSONObject prevStepResult) {
-		this.prevStepResult = prevStepResult;
-	}
-
-	public void setStepResult(JSONObject stepResult) {
-		this.stepResult = stepResult;
-	}
-
-	public void setStepResultCallBack(JSONObject stepResult,
-			StepsAbstraction sa, StepResultCallback stepResultCallback) {
-		this.setStepResult(stepResult);
-		this.setStepAbstract(sa);
-		stepResultCallback.onStepResult(sa, this, this.stepResult);
-		Step nextStep = sa.getNextStep();
-		if (nextStep != null) {
-			nextStep.setPrevStepResult(stepResult);
-			stepResultCallback.onGetNextStep(nextStep, getStepData(nextStep.getPrevStepResult()), nextStep.getStepTypeEnum(), nextStep.canRollBack());
-		} else {
-			return;
-		}
-	}
-	
-	public void setStepRollBack(StepPathCallBack stpcb){
-		
-	}
-
-	public StepsAbstraction getStepAbstract() {
-		return stepAbstract;
 	}
 
 	public void setStepAbstract(StepsAbstraction stepAbstract) {

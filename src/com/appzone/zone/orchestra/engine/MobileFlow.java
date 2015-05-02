@@ -9,8 +9,8 @@ import com.appzone.zone.orchestra.engine.datatypes.Fields;
 import com.appzone.zone.orchestra.engine.datatypes.StepsAbstraction;
 
 /**
- * @author Akapo Damilola F. [ helios66, fdamilola ] 
- * Data Structure for a Mobile Flow
+ * @author Akapo Damilola F. [ helios66, fdamilola ] Data Structure for a Mobile
+ *         Flow
  * 
  */
 
@@ -25,7 +25,7 @@ public class MobileFlow {
 
 	/**
 	 * @param stringFlow
-	 * Creates MobileFlow object from a flowString
+	 *            Creates MobileFlow object from a flowString
 	 */
 	public MobileFlow(String stringFlow) {
 		// TODO Auto-generated constructor stub
