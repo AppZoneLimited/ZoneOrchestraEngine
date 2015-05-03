@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.appzone.zone.orchestra.engine.datatypes.Fields.SubMappings;
 import com.appzone.zone.orchestra.engine.enums.StepTypeEnum;
-import com.appzone.zone.orchestra.engine.interfaces.StepPathCallBack;
+
 import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
 
 /**
@@ -184,26 +184,34 @@ public class Step {
 				.getAttachedCommands();
 		
 		if (getStepResult() != null) {
-			EntityResultParser result = new EntityResultParser(prevStepResult);
+			EntityResultParser result = new EntityResultParser(prevResult);
 			try {
+				//Log.e("EventKeysArrayList", this.getEvents().getEventKeysArrayList().toString());
 				if(this.getEvents().getEventKeysArrayList().contains(result.getEventName())){
+					Log.e("EventFound!", "True");
 					if (attachedCommands.size() > 0) {
+						//Log.e("Attached Command Size!", attachedCommands.size()+"");
 						for (int i = 0; i < attachedCommands.size(); i++) {
-							AttachedCommand attCom = attachedCommands.get(i);							
+							AttachedCommand attCom = attachedCommands.get(i);
+							//Log.e("AttCommand", attCom.getJsonObject().toString());
 							ArrayList<CommandMapping> commandMappings = attCom
 									.getCommandMappingsList();
-							
-
 							for (CommandMapping cmap : commandMappings) {
+								Log.e("AttCommandMappings", cmap.getJson().toString());
+								
 								if(cmap.hasSubmapping()){
+									Log.e("HasSubMappings", "True");
 									HashMap<String, SubMappings> smaps = cmap.getFieldSubmappings();
 									Set<String> smapKeys = smaps.keySet();
-									
 									for(String keySetString:smapKeys){
 										SubMappings s = smaps.get(keySetString);
 										data.put(s.getField(), result.getEeD().getEntityEventDataValueByKey(s.getValueSource()));
 									}
-									//data.put(cmap.getField(), result.getEeD().getEntityEventDataValueByKey(cmap.getValueSource()));
+								}else{
+									Log.e("HasSubMappings", "False");
+									Log.e("CmapField", cmap.getField());
+									Log.e("CmapValueSource", cmap.getValueSource());
+									data.put(cmap.getField(), result.getEeD().getEntityEventDataValueByKey(cmap.getValueSource()));
 								}
 								
 							}
@@ -212,6 +220,7 @@ public class Step {
 						Log.e("Error", "No Attached Command");
 					}
 				}
+				
 				baseData.put(result.getEeD().getEntityName(), data);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -241,8 +250,20 @@ public class Step {
 		}
 	}
 
-	public void setStepRollBack(StepPathCallBack stpcb){
-
+	public void setStepEntityResultCallBack(JSONObject stepResult,
+			StepsAbstraction sa, StepResultCallback stepResultCallback){
+		
+		this.setStepResult(stepResult);
+		this.setStepAbstract(sa);
+		stepResultCallback.onStepResult(sa, this, this.stepResult);
+		Step nextStep = sa.getNextStep();
+		if (nextStep != null) {
+			nextStep.setPrevStepResult(stepResult);
+			stepResultCallback.onGetNextStep(nextStep, getStepEntityData(nextStep.getPrevStepResult()), nextStep.getStepTypeEnum(), nextStep.canRollBack());
+		} else {
+			return;
+		}
+		
 	}
 
 	public JSONObject getStepResult() {

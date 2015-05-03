@@ -31,7 +31,7 @@ public class CommandName {
 		try {
 			cObject = new JSONObject(cObjectString);
 		} catch (Exception s) {
-			s.printStackTrace();
+			//s.printStackTrace();
 			//setCommandNameString(cObjectString);
 		}
 		
