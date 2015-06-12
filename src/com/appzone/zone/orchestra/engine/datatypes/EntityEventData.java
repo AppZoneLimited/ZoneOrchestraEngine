@@ -3,7 +3,6 @@ package com.appzone.zone.orchestra.engine.datatypes;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.util.Log;
 
 public class EntityEventData{
 	private String entityName;
@@ -25,12 +24,9 @@ public class EntityEventData{
 	public String getEntityEventDataValueByKey(String entityEventDataKey){
 		if(entityEventDataKey.contains(".")){
 			String[] sdata = entityEventDataKey.split("\\.");
-			Log.e("0", sdata[0]);
-			Log.e("1", sdata[1]);
 			return getEntityData().optString(sdata[1]);
 		}else{
 			String entityEventDataValue = getEntityEventData().optString(entityEventDataKey, null);
-			Log.e("eData", getEntityData().toString());
 			return entityEventDataValue;
 		}
 	}
