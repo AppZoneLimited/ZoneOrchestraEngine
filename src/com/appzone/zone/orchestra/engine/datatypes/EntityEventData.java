@@ -12,12 +12,18 @@ public class EntityEventData{
 	private JSONObject entityData;
 
 	public EntityEventData(JSONObject entityEventData) throws Exception {
-		// TODO Auto-generated constructor stub
 		if(entityEventData != null){
 			this.setEntityEventData(entityEventData);
 			this.entityEventKeys = entityEventData.names();
 			this.setEntityName(this.entityEventKeys.getString(0));
-			this.setEntityData(entityEventData.getJSONObject(getEntityName()));
+			Object s = entityEventData.get(getEntityName());
+			JSONObject sm = null;
+			if(s instanceof String){
+				sm = new JSONObject(s.toString());
+			}else{
+				sm = entityEventData.optJSONObject(getEntityName());
+			}
+			this.setEntityData(sm);
 		}
 	}
 

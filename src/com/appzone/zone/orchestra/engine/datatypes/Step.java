@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.appzone.zone.orchestra.engine.datatypes.Fields.SubMappings;
 import com.appzone.zone.orchestra.engine.enums.StepTypeEnum;
 import com.appzone.zone.orchestra.engine.interfaces.StepResultCallback;
@@ -40,6 +42,8 @@ public class Step {
 	final String SERVICE_ENTITY = "DejaVu.Entity";
 	final String SERVICE_GOTO = "DejaVu.Goto";
 	final String SERVICE_SCRIPT = "DejaVu.Script";
+	
+	final String VERSION = "2.2";
 
 	public boolean isUI() {
 		return isUI;
@@ -151,7 +155,11 @@ public class Step {
 	 */
 
 	public JSONObject getStepData(JSONObject prevStepResult){
+		
+		Log.e("Ver :", VERSION);
+		
 		JSONObject data = new JSONObject();
+		JSONObject newdata = new JSONObject();
 
 		ArrayList<AttachedCommand> attachedCommands = this.getEvents()
 				.getAttachedCommands();
@@ -163,14 +171,20 @@ public class Step {
 					if (attachedCommands.size() > 0) {
 						for (int i = 0; i < attachedCommands.size(); i++) {
 							AttachedCommand attCom = attachedCommands.get(i);
+							
 							ArrayList<CommandMapping> commandMappings = attCom
 									.getCommandMappingsList();
-
 							for (CommandMapping cmap : commandMappings) {
-
+								if(Integer.parseInt(cmap.getSourceType()) == 3){
+									newdata.put(cmap.getField(), cmap.getValueSource());
+								}
 								data.put(cmap.getField(), result.getEventData().getEventDataValueByKey(cmap.getValueSource()));
+								
+								
 							}
 						}
+						
+						
 					}else{
 						//Log.e("Error", "No Attached Command");
 					}
@@ -180,13 +194,23 @@ public class Step {
 				e.printStackTrace();
 			}
 		}
-
+		
+//		String finalstring = data.toString().substring(0, data.toString().length() - 1)+","+newdata.toString().substring(1);
+//	
+//		try {
+//			return new JSONObject(finalstring);
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
 		return data;
 	}
 
 	public JSONObject getStepEntityData(JSONObject prevResult){
+		Log.e("Ver :", VERSION);
 		JSONObject data = new JSONObject();
 		JSONObject baseData = new JSONObject();
+		JSONObject newdata = new JSONObject();
+		
 		boolean hasSubMappings = true;
 		ArrayList<AttachedCommand> attachedCommands = this.getEvents()
 				.getAttachedCommands();
@@ -204,7 +228,12 @@ public class Step {
 							//Log.e("AttCommand", attCom.getJsonObject().toString());
 							ArrayList<CommandMapping> commandMappings = attCom
 									.getCommandMappingsList();
-							for (CommandMapping cmap : commandMappings) {								
+							for (CommandMapping cmap : commandMappings) {
+								
+								if(Integer.parseInt(cmap.getSourceType()) == 3){
+									newdata.put(cmap.getField(), cmap.getValueSource());
+								}
+								
 								if(cmap.hasSubmapping()){
 									hasSubMappings = true;
 									HashMap<String, SubMappings> smaps = cmap.getFieldSubmappings();
@@ -235,6 +264,13 @@ public class Step {
 			
 		}
 		
+		String finalstring = baseData.toString().substring(0, baseData.toString().length() - 1)+","+newdata.toString().substring(1);
+	
+		try {
+			return new JSONObject(finalstring);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return baseData;
 	}
 

@@ -2,23 +2,27 @@ package com.appzone.zone.orchestra.engine.datatypes;
 
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class EntityResultParser {
 	private String eventName;
 	private EntityEventData eeD;
-	
-	private String TAG = this.getClass().getSimpleName();
+
 
 	public EntityResultParser(JSONObject resultJson) {
 		
-		Log.e(TAG+"EntityResultParserJSON", resultJson.toString());
 		
 		setEventName(resultJson.optString("EventName", null));
 
 		try {
-			setEeD(new EntityEventData(resultJson.optJSONObject("EventData")));
-			//Log.e(TAG+"eeD", getEeD().toString());
+			Object s = resultJson.get("EventData");
+			JSONObject sm = null;
+			if(s instanceof String){
+				sm = new JSONObject(s.toString());
+			}else{
+				sm = resultJson.optJSONObject("EventData");
+			}
+			
+			setEeD(new EntityEventData(sm));
+			//Log.e(TAG+"eeD", resultJson.optJSONObject("EventData").toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
